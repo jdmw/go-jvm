@@ -15,19 +15,26 @@ func parseConstPool(length int,r *BigEndianReader) (ConstantPool,int) {
 	return cp,accFlagToBeChecked
 }
 
+func (self ConstantPool) getConstantPoolInfo(index u2) ConstantPoolInfo {
+	if index == 0 || int(index) >= len(self){
+		panic("constant pool index error " + string(index))
+	}
+	return self[index -1]
+}
+
 func (self ConstantPool) getUtf8String(index u2 ) string {
-	return self[index].(*ConstUtf8Info).str
+	return self.getConstantPoolInfo(index).(*ConstUtf8Info).str
 }
 
 func (self ConstantPool) getNameAndType(index u2) (string,string) {
-	info := self[index].(*ConstNameAndTypeInfo)
+	info := self.getConstantPoolInfo(index).(*ConstNameAndTypeInfo)
 	name := self.getUtf8String(info.name_index)
 	description := self.getUtf8String(info.descriptor_index)
 	return name,description
 }
 
 func (self ConstantPool) getClassName(index u2) string {
-	classInfo := self[index].(*ConstClassInfo)
+	classInfo := self.getConstantPoolInfo(index).(*ConstClassInfo)
 	return self.getUtf8String(classInfo.name_index)
 }
 

@@ -22,7 +22,8 @@ func parseAttributeInfo(cf ClassFile,r *BigEndianReader) AttributeInfo{
 func newAttributeInfo(attributeName string ,r *BigEndianReader) AttributeInfo{
 	switch attributeName {
 		case "ConstantValue" : return &ConstValueAttr{}
-
+		case "Code" : return &CodeAttr{}
+	case "SourceFile" : return &SourceFileAttr{}
 		default: return &UnknownAttr{}
 	}
 }
@@ -35,7 +36,7 @@ func (self *UnknownAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
 	self.data = r.ReadByteArray(length)
 }
 
-func parseAttributes(cf ClassFile,r *BigEndianReader) Attributes{
+func parseAttributes(cf ClassFile,length u2,r *BigEndianReader) Attributes{
 	attrs := Attributes{}
 	return attrs
 }

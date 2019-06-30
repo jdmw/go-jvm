@@ -1,6 +1,8 @@
 package classfile
 
 /**
+参考： https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1
+
 ClassFile {
     u4             magic;
     u2             minor_version;
@@ -73,7 +75,7 @@ func ParseClassFile(data []byte) ClassFile {
 
 	attrs := make([]AttributeInfo,r.ReadU2())
 	for i := range attrs {
-		attrs[i] = parseAttributeInfo(r)
+		attrs[i] = parseAttributeInfo(cf,r)
 	}
 	cf.attributes = attrs
 	return cf

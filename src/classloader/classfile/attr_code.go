@@ -38,23 +38,22 @@ type ExceptionTableInfo struct {
 
 func (self *CodeAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
 	self.cf = cf
-	attribute_name_index := r.ReadU2()
-	attribute_length := r.ReadU4()
 	self.maxStack = r.ReadU2()
 	self.maxLocals = r.ReadU2()
 
 	code_length := r.ReadU4()
 	self.code = r.ReadByteArray(code_length)
 
-	exception_table_length := r.ReadU2()
+	self.exceptionTable = make([]ExceptionTableInfo,r.ReadU2())
+	for i := range self.exceptionTable {
+		self.exceptionTable[i] = ExceptionTableInfo{
+			r.ReadU2(),
+			r.ReadU2(),
+			r.ReadU2(),
+			r.ReadU2(),
+		}
+	}
 
-
-	self.attribute_name_index = r.ReadU2()
-	r.ReadU4()
-	self.constantvalue_index = r.ReadU2()
-}
-
-func (self *CodeAttr) AttributeName() string{
-	return self.cp.getUtf8String(self.attribute_name_index)
+	self.attributes = parseAttributes(cf ,r.ReadU2(),r)
 }
 
