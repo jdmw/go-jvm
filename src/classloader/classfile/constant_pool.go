@@ -1,5 +1,7 @@
 package classfile
 
+import "fmt"
+
 type ConstantPool []ConstantPoolInfo
 
 func parseConstPool(length int,r *BigEndianReader) (ConstantPool,int) {
@@ -10,6 +12,7 @@ func parseConstPool(length int,r *BigEndianReader) (ConstantPool,int) {
 	for i:=0;i<length;i++ {
 		info,flag = parseConstantPoolInfo(cp, r)
 		cp[i] = info
+		fmt.Printf("constant_pool[%v] = %v\n",i,info)
 		accFlagToBeChecked |= flag
 	}
 	return cp,accFlagToBeChecked

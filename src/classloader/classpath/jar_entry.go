@@ -1,4 +1,4 @@
-package classloader
+package classpath
 
 import (
 	"archive/zip"

@@ -37,7 +37,10 @@ func (self *UnknownAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
 }
 
 func parseAttributes(cf ClassFile,length u2,r *BigEndianReader) Attributes{
-	attrs := Attributes{}
+	attrs := make([]AttributeInfo,length)
+	for i:=0;i < int(length);i++ {
+		attrs[i] = parseAttributeInfo(cf,r)
+	}
 	return attrs
 }
 

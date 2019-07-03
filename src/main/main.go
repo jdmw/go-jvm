@@ -1,7 +1,7 @@
 package main
 
 import (
-	"classloader/classpath"
+	"../classloader"
 	"fmt"
 )
 
@@ -13,13 +13,14 @@ func startJvm(cmd *Cmd ){
 	fmt.Printf("Start "+cmd.classname+" ");
 	fmt.Println(cmd.args)
 
-	classPath := classloader.NewClassPath(cmd.Xjre,cmd.classpath)
-	data,_,_ := classPath.ReadClass(cmd.classname)
-	if data == nil {
+	loader := classloader.NewClassloader(cmd.Xjre,cmd.classpath)
+	classfile := loader.LoadClass(cmd.classname)
+	if classfile == nil {
 		panic("can not load main class " + cmd.classname)
 	}
-	fmt.Printf("class data: %v",len(data))
 }
+
+// run:  main -cp example\java\jvm-example-main\target\classes jd.jvmexample.main.Main
 func main(){
 	cmd := parseCmd()
 	if cmd.helpFlag {

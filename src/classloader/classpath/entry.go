@@ -1,5 +1,4 @@
-package classloader
-
+package classpath
 import (
 	"os"
 	"strings"

@@ -1,10 +1,11 @@
-package classloader
+package classpath
 
 import (
 	"os"
 	"path/filepath"
 	"strings"
 )
+
 
 type ClassPath struct{
 	bootstrapClassPath Entry

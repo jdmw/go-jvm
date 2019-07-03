@@ -39,7 +39,7 @@ methods         []MethodInfo
 attributes      []AttributeInfo
 }
 
-func ParseClassFile(data []byte) ClassFile {
+func ParseClassFile(data []byte) *ClassFile {
 	cf := ClassFile{}
 	r := &BigEndianReader{data}
 	if( CLASSFILE_MAGICNUM != r.ReadU4()){
@@ -50,7 +50,7 @@ func ParseClassFile(data []byte) ClassFile {
 	cf.major_version = r.ReadU2()
 
 	accFlag := 0
-	cf.constant_pool,accFlag = parseConstPool(int(r.ReadU2()),r)
+	cf.constant_pool,accFlag = parseConstPool(int(r.ReadU2()-1),r)
 
 	cf.access_flags = r.ReadU2()
 	if( accFlag & ACC_MODULE > 0 && cf.access_flags & ACC_MODULE == 0){
@@ -72,11 +72,13 @@ func ParseClassFile(data []byte) ClassFile {
 	for i:= range methods {
 		methods[i] = parseMethodInfo(cf,r)
 	}
+	cf.methods = methods
 
 	attrs := make([]AttributeInfo,r.ReadU2())
 	for i := range attrs {
 		attrs[i] = parseAttributeInfo(cf,r)
 	}
 	cf.attributes = attrs
-	return cf
+	return &cf
 }
+

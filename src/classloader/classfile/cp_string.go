@@ -39,7 +39,7 @@ type ConstUtf8Info struct{
 
 func (self *ConstUtf8Info) readInfo(r *BigEndianReader) {
 	length := r.ReadU2()
-	bytes := r.ReadByteArray(uint32(length))
+	bytes := r.ReadByteArray(u4(length))
 	self.str = decodeMUTF8(bytes)
 }
 

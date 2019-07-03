@@ -9,7 +9,7 @@ type MethodInfo struct {
 }
 
 func parseMethodInfo(cf 	ClassFile,r *BigEndianReader) MethodInfo{
-	info := MethodInfo{cf,r.ReadU2(),r.ReadU2(),r.ReadU2(),parseAttributes(cf,r)}
+	info := MethodInfo{cf,r.ReadU2(),r.ReadU2(),r.ReadU2(),parseAttributes(cf,r.ReadU2(),r)}
 	return info
 }
 

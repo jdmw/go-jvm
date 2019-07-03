@@ -9,7 +9,7 @@ type FieldInfo struct {
 }
 
 func parseFieldInfo(cf 	ClassFile,r *BigEndianReader) FieldInfo{
-	info := FieldInfo{cf,r.ReadU2(),r.ReadU2(),r.ReadU2(),parseAttributes(cf,r)}
+	info := FieldInfo{cf,r.ReadU2(),r.ReadU2(),r.ReadU2(),parseAttributes(cf,r.ReadU2(),r)}
 	return info
 }
 
