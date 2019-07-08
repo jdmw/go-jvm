@@ -11,8 +11,8 @@ LineNumberTable_attribute {
     } line_number_table[line_number_table_length];
 }
 
-
 */
+
 type LineNumberTableAttrInfo struct {
 	start_pc          u2
 	line_number            u2

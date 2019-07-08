@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/jvm-example-common/jvm-example-common.iml" filepath="$PROJECT_DIR$/jvm-example-common/jvm-example-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jvm-example-helper/jvm-example-helper.iml" filepath="$PROJECT_DIR$/jvm-example-helper/jvm-example-helper.iml" />
       <module fileurl="file://$PROJECT_DIR$/jvm-example-main/jvm-example-main.iml" filepath="$PROJECT_DIR$/jvm-example-main/jvm-example-main.iml" />
       <module fileurl="file://$PROJECT_DIR$/jvm-example-parent.iml" filepath="$PROJECT_DIR$/jvm-example-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/jvm-example-util/jvm-example-util.iml" filepath="$PROJECT_DIR$/jvm-example-util/jvm-example-util.iml" />

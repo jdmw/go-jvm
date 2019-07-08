@@ -7,15 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="jvm-example-common" />
+        <module name="jvm-example-helper" />
         <module name="jvm-example-main" />
         <module name="jvm-example-util" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="jvm-example-common" target="1.5" />
-      <module name="jvm-example-main" target="1.5" />
-      <module name="jvm-example-parent" target="1.5" />
-      <module name="jvm-example-util" target="1.5" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="8" />
   </component>
 </project>

@@ -12,6 +12,7 @@
         <module>jvm-example-main</module>
         <module>jvm-example-common</module>
         <module>jvm-example-util</module>
+        <module>jvm-example-helper</module>
     </modules>
 
 
