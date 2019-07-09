@@ -12,6 +12,12 @@
         <module name="jvm-example-util" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="jvm-example-common" target="1.8" />
+      <module name="jvm-example-helper" target="1.8" />
+      <module name="jvm-example-main" target="1.8" />
+      <module name="jvm-example-parent" target="1.8" />
+      <module name="jvm-example-util" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
