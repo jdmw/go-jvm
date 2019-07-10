@@ -9,7 +9,14 @@ package classfile
  *     u2         num_annotations;
  *     annotation annotations[num_annotations];
  * }
- * 
+ *
+	RuntimeInvisibleAnnotations_attribute {
+		u2         attribute_name_index;
+		u4         attribute_length;
+		u2         num_annotations;
+		annotation annotations[num_annotations];
+	}
+
  * annotation {
  *     u2 type_index;
  *     u2 num_element_value_pairs;
@@ -55,69 +62,77 @@ package classfile
 	[	Array type	array_value	Not applicable
  */
 type RuntimeVisibleAnnotationsAttr []RuntimeVisibleAnnotation
+type RuntimeInvisibleAnnotationsAttr []RuntimeInvisibleAnnotation
+
+type RuntimeInvisibleAnnotation struct{
+	cp ConstantPool
+	typeIndex u2 // annotation classname
+	elementValuePairs []AnElementValuePair
+}
 
 type RuntimeVisibleAnnotation struct{
 	cp ConstantPool
 	typeIndex u2 // annotation classname
-	elementValuePairs []RvanElementValuePair
+	elementValuePairs []AnElementValuePair
 }
 
-type RvanElementValuePair struct{
+type AnElementValuePair struct{
 	elementNameIndex u2
 	//tag u1
-	value RvanElementValue
+	value AnElementValue
 }
 
-type RvanElementValue interface {
+type AnElementValue interface {
 }
-type RvanElementConstValue struct{
+type AnElementConstValue struct{
 	cp ConstantPool
 	const_value_index u2
 }
-type RvanElementEnumConstValue struct{
+type AnElementEnumConstValue struct{
 	cp ConstantPool
 	type_name_index u2
 	const_name_index u2
 }
-type RvanElementClassInfoValue struct{
+type AnElementClassInfoValue struct{
 	cp ConstantPool
 	class_info_index u2
 }
-type RvanElementAnnotationValue struct{
+type AnElementAnnotationValue struct{
 	cp ConstantPool
 	annotation RuntimeVisibleAnnotation
 }
-type RvanElementArrayValue struct{
+type AnElementArrayValue struct{
 	cp ConstantPool
 	annotation RuntimeVisibleAnnotation
 }
 
-func parse(cf ClassFile,length u4,r *BigEndianReader)  RuntimeVisibleAnnotationsAttr {
+func (self RuntimeVisibleAnnotationsAttr) parse(cf ClassFile,length u4,r *BigEndianReader)   {
 	ans := []RuntimeVisibleAnnotation{}
 	num_annotations := r.ReadU2()
 	for i := 0; i< int(num_annotations); i++ {
 		an := parseRuntimeVisibleAnnotation(cf,r)
-		ans = append(ans,an)
+		ans = append(self,an)
 	}
-	return ans
 }
+
+
 func parseRuntimeVisibleAnnotation(cf ClassFile,r *BigEndianReader) RuntimeVisibleAnnotation {
 	an := RuntimeVisibleAnnotation{cf.constant_pool,r.ReadU2(),
-		make([]RvanElementValuePair,r.ReadU2())}
+		make([]AnElementValuePair,r.ReadU2())}
 	for j := range an.elementValuePairs {
 		pair := an.elementValuePairs[j]
 		pair.elementNameIndex = r.ReadU2()
-		pair.value = parseRvanElementValue(cf,r);
+		pair.value = parseAnElementValue(cf,r);
 	}
 	return an ;
 }
-func parseRvanElementValue(cf ClassFile,r *BigEndianReader) RvanElementValue {
+func parseAnElementValue(cf ClassFile,r *BigEndianReader) AnElementValue {
 	tag := r.ReadU1()
 	switch tag {
-		case 'e' : return RvanElementEnumConstValue{cf.constant_pool,r.ReadU2(),r.ReadU2()};
-		case 'c' : return RvanElementClassInfoValue{cf.constant_pool,r.ReadU2()};
+		case 'e' : return AnElementEnumConstValue{cf.constant_pool,r.ReadU2(),r.ReadU2()};
+		case 'c' : return AnElementClassInfoValue{cf.constant_pool,r.ReadU2()};
 		case '@' : return parseRuntimeVisibleAnnotation(cf,r);
-		case '[' : return parseRvanElementValue(cf,r);
+		case '[' : return parseAnElementValue(cf,r);
 
 		case 'B' :
 		case 'C' :
@@ -130,7 +145,7 @@ func parseRvanElementValue(cf ClassFile,r *BigEndianReader) RvanElementValue {
 		case 's' :
 		default:
 	}
-	return RvanElementConstValue{cf.constant_pool,r.ReadU2()}
+	return AnElementConstValue{cf.constant_pool,r.ReadU2()}
 }
 
 func (self RuntimeVisibleAnnotation) GetType() string{

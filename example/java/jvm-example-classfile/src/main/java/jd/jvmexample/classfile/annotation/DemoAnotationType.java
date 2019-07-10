@@ -1,7 +1,4 @@
-package jd.jvmexample.main.classfile.annotation;
-
-import java.util.List;
-import java.util.Map;
+package jd.jvmexample.classfile.annotation;
 
 /**
  * Created by huangxia on 2019/7/9.

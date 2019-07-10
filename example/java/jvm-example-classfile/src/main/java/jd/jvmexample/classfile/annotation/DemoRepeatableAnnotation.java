@@ -1,9 +1,7 @@
-package jd.jvmexample.main.classfile.annotation;
+package jd.jvmexample.classfile.annotation;
 
 
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
-import java.lang.annotation.Target;
 
 
 @Repeatable(FooContainer.class)

@@ -1,4 +1,4 @@
-package jd.jvmexample.main.classfile.annotation;
+package jd.jvmexample.classfile.annotation;
 
 
 @interface Preliminary {}
@@ -10,6 +10,8 @@ package jd.jvmexample.main.classfile.annotation;
 }
 
 @Copyright("2002 Yoyodyne Propulsion Systems, Inc.")
+
+
 class OscillationOverthruster {  }
 
 @Endorsers({"Children", "Unscrupulous dentists"})
@@ -38,10 +40,4 @@ class BitTwiddle {  }
 @interface Quality {
     enum Level { BAD, INDIFFERENT, GOOD }
     Level value();
-}
-
-public class AnnotationExample {
-    public static void main(String[] args) {
-        System.out.println("");
-    }
 }

@@ -29,6 +29,7 @@ func (self *LocalVariableTableAttrInfo) parse(cf ClassFile,length u4,r *BigEndia
 	for i := range attr{
 		attr[i] = LocalVariableTableAttrInfo{r.ReadU2(),r.ReadU2(),r.ReadU2(),r.ReadU2(),r.ReadU2(),}
 	}
+	append(self,attr)
 	//self.sourcefile = cf.constant_pool.getUtf8String(r.ReadU2())
 }
 
