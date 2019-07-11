@@ -8,18 +8,18 @@ u2 constantvalue_index;
 }
 
 */
-type ConstValueAttr struct {
+type ConstantValueAttr struct {
 	cp ConstantPool
 	constantvalue_index u2
 }
 
-func (self *ConstValueAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+func (self *ConstantValueAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
 	self.cp = cf.constant_pool
 	self.constantvalue_index = r.ReadU2()
 }
 
-func (self *ConstValueAttr) ConstantValueIndex() u2{
-	return self.constantvalue_index
+func (self *ConstantValueAttr) GetConstantPoolInfo() ConstantPoolInfo{
+	return self.cp.getConstantPoolInfo(self.constantvalue_index)
 }
 
 

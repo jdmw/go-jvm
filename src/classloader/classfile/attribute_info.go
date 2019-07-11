@@ -21,9 +21,34 @@ func parseAttributeInfo(cf ClassFile,r *BigEndianReader) AttributeInfo{
 
 func newAttributeInfo(attributeName string ,r *BigEndianReader) AttributeInfo{
 	switch attributeName {
-		case "ConstantValue" : return &ConstValueAttr{}
+		case "ConstantValue" : return &ConstantValueAttr{}
 		case "Code" : return &CodeAttr{}
-	case "SourceFile" : return &SourceFileAttr{}
+		//  case "StackMapTable" : return &StackMapTableAttr{}
+		case "Exceptions" : return &ExceptionsAttr{}
+		case "InnerClasses" : return &InnerClassesAttr{}
+		//  case "EnclosingMethod" : return &EnclosingMethodAttr{}
+		//  case "Synthetic" : return &SyntheticAttr{}
+		//  case "Signature" : return &SignatureAttr{}
+		case "SourceFile" : return &SourceFileAttr{}
+		//  case "SourceDebugExtension" : return &SourceDebugExtensionAttr{}
+		case "LineNumberTable" : return &LineNumberTableAttr{}
+		case "LocalVariableTable" : return &LocalVariableTableAttr{}
+		//  case "LocalVariableTypeTable" : return &LocalVariableTypeTableAttr{}
+		//  case "Deprecated" : return &DeprecatedAttr{}
+		case "RuntimeVisibleAnnotations" : return &RuntimeVisibleAnnotationsAttr{}
+		case "RuntimeInvisibleAnnotations" : return &RuntimeInvisibleAnnotationsAttr{}
+		//  case "RuntimeVisibleParameterAnnotations" : return &RuntimeVisibleParameterAnnotationsAttr{}
+		//  case "RuntimeInvisibleParameterAnnotations" : return &RuntimeInvisibleParameterAnnotationsAttr{}
+		//  case "RuntimeVisibleTypeAnnotations" : return &RuntimeVisibleTypeAnnotationsAttr{}
+		//  case "RuntimeInvisibleTypeAnnotations" : return &RuntimeInvisibleTypeAnnotationsAttr{}
+		//  case "AnnotationDefault" : return &AnnotationDefaultAttr{}
+		//  case "BootstrapMethods" : return &BootstrapMethodsAttr{}
+		//  case "MethodParameters" : return &MethodParametersAttr{}
+		//  case "Module" : return &ModuleAttr{}
+		//  case "ModulePackages" : return &ModulePackagesAttr{}
+		//  case "ModuleMainClass" : return &ModuleMainClassAttr{}
+		//  case "NestHost" : return &NestHostAttr{}
+		//  case "NestMembers" : return &NestMembersAttr{}
 		default: return &UnknownAttr{}
 	}
 }

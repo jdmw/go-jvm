@@ -57,8 +57,8 @@ public class AttrStructureCodeGen {
     }
 
     static  StringBuilder mdGenSb = new StringBuilder("# 4.7. [Attributes]("+URLS.SPCS_CLASSFILE_FORMAT_URL+"#jvms-4.7)\n");
-    public static AttrStructFile parseAttr(String name ,ElementInfo info){
-        AttrStructFile struct =  new AttrStructFile(name+"Attr");
+    public static AttrStructure parseAttr(String name ,ElementInfo info){
+        AttrStructure struct =  new AttrStructure(name+"Attr");
         StringBuilder pres = new StringBuilder();
         Elements preNodes = info.element.select("pre");
 
@@ -71,26 +71,40 @@ public class AttrStructureCodeGen {
         mdGenSb.append("\n```\n");
         struct.originCodes = pres.toString();
         if(preNodes.size() > 0){
-            Scanner scanner = new Scanner(preNodes.get(0).text());
-            scanner.useDelimiter("\n");
-            scanner.next();
-            //scanner.next();
-            while (scanner.hasNext()){
-                String line = scanner.next().trim();
-                if(line.startsWith("{") || line.startsWith("}")) {
-                    if(line.length() > 1){
-                        struct.finish = false ;
+            preNodes.forEach((node)->{
+                LinkedHashMap<String,String> attrs = new LinkedHashMap<>();
+                Scanner scanner = new Scanner(node.text());
+                scanner.useDelimiter("\n");
+                String firstLine = scanner.next().trim();
+                if(firstLine.startsWith("union")){
+                    firstLine = firstLine.substring("union".length());
+                }
+                String n = firstLine.substring(0,firstLine.indexOf("{")).trim();;
+                //scanner.next();
+                while (scanner.hasNext()){
+                    String line = scanner.next().trim();
+                    if(line.startsWith("{") || line.startsWith("}")) {
+                        if(line.length() > 1){
+                            struct.finish = false ;
+                        }
+                        continue;
                     }
-                    continue;
-                }
 
-                String[] arr = line.replace(";","").split("\\s+");
-                //System.out.append("")
-                if(arr.length > 2 && !"attribute_name_index".equals(arr[1]) && !"attribute_length".equals(arr[1])){
-                    struct.attrs.putIfAbsent(arr[1],arr[0]);
+                    if(line.contains("=")){
+                        line = line.substring(0,line.indexOf("="));
+                    }else if(line.contains("/*")){
+                        line = line.substring(0,line.indexOf("/*"));
+                    }
+                    line = line.trim();
+                    String[] arr = line.replace(";","").split("\\s+");
+                    //System.out.append("")
+                    if(arr.length >= 2 /*&& !"attribute_name_index".equals(arr[1]) && !"attribute_length".equals(arr[1])*/){
+                        attrs.putIfAbsent(arr[1],arr[0]);
+                    }
                 }
-            }
-            System.out.append(pres);
+                struct.attrsMap.put(n,attrs);
+                //System.out.append(pres);
+            });
         }else {
             System.err.println(name + " no codes");
         }
@@ -99,20 +113,23 @@ public class AttrStructureCodeGen {
     public static void main(String[] args) throws IOException {
 
         List<String> complete = new ArrayList<>();
-        list(true).forEach((name,e)->{
-            if("Exceptions".equals(name)) {
-                AttrStructFile s = parseAttr(name,e);
+        list(false).forEach((name,e)->{
+            //AttrStructFile a = parseAttr(name,e);
+            //complete.add(String.format("\t\t%scase \"%s\" : return &%s{}\n",a.finish?"":"\\\\  ",name,a.name));
+            if("StackMapTable".equals(name)) {
+                AttrStructure s = parseAttr(name,e);
                 complete.add(String.format("\t\t%scase \"%s\" : return &%s{}\n",s.finish?"":"\\ TODO: ",name,s.name));
-                try(OutputStream f = new FileOutputStream(new File(gegCodeBase,"attr_"+toUnderscopeName(name)+".go"))){
+                /*try(OutputStream f = new FileOutputStream(new File(gegCodeBase,"attr_"+toUnderscopeName(name)+".go"))){
                     f.write(s.toString().getBytes());
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                 } catch (IOException e1) {
                     e1.printStackTrace();
-                }
+                }*/
+                System.out.println(s);
             }
         });
-        //System.out.println(mdGenSb);
+        //complete.forEach(System.out::print);
         //gegCodeBase.getAbsolutePath()
         //System.out.println(gegCodeBase);
         //complete.forEach(System.out::println);
