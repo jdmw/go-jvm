@@ -100,7 +100,7 @@ public class AttrStructureCodeGen {
 
         List<String> complete = new ArrayList<>();
         list(true).forEach((name,e)->{
-            if("InnerClasses".equals(name)) {
+            if("Exceptions".equals(name)) {
                 AttrStructFile s = parseAttr(name,e);
                 complete.add(String.format("\t\t%scase \"%s\" : return &%s{}\n",s.finish?"":"\\ TODO: ",name,s.name));
                 try(OutputStream f = new FileOutputStream(new File(gegCodeBase,"attr_"+toUnderscopeName(name)+".go"))){

@@ -31,6 +31,7 @@ jd\jvmexample\classfile\annotation\OtherNestedDeclarations$Clazz.class
 jd\jvmexample\classfile\annotation\Formatter.class
 jd\jvmexample\classfile\start\SingleMethodInterface.class
 jd\jvmexample\classfile\annotation\Author.class
+jd\jvmexample\classfile\start\ThrowException.class
 jd\jvmexample\classfile\annotation\X.class
 jd\jvmexample\classfile\start\EmptyClassFile.class
 jd\jvmexample\classfile\start\EmptyEnum.class

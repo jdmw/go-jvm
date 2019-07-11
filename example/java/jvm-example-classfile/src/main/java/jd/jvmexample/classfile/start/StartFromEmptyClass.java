@@ -1,5 +1,7 @@
 package jd.jvmexample.classfile.start;
 
+import java.io.IOException;
+
 /**
  this_calss: 1 // jd.jvmexample.main.classfile.startfromzero.EmptyInterface
  super_class: 2 // java/lang/Object
@@ -75,5 +77,7 @@ class SingleMethodClass {
     void fun(){}
 }
 
-
+class ThrowException{
+    void fun() throws IOException,IllegalArgumentException,RuntimeException {}
+}
 
