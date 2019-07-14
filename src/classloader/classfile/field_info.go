@@ -17,3 +17,10 @@ func (self *FieldInfo) Name() string {
 	return self.cf.constant_pool.getUtf8String(self.name_index)
 }
 
+func (self *FieldInfo) Descriptor() string {
+	return self.cf.constant_pool.getUtf8String(self.descriptor_index)
+}
+
+func (self *FieldInfo) Attributes() Attributes {
+	return self.attributes
+}

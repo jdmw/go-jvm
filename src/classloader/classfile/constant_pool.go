@@ -9,8 +9,9 @@ func parseConstPool(length int,r *BigEndianReader) (ConstantPool,int) {
 	cp := make(ConstantPool,length)
 	accFlagToBeChecked := 0
 	flag := 0
-	for i:=0;i<length;i++ {
-		info,flag = parseConstantPoolInfo(cp, r)
+	num_of_entries := 1
+	for i:=0;i<length;i+=num_of_entries {
+		info,flag,num_of_entries = parseConstantPoolInfo(cp, r)
 		cp[i] = info
 		fmt.Printf("constant_pool[%v] = %v\n",i,info)
 		accFlagToBeChecked |= flag
@@ -37,6 +38,10 @@ func (self ConstantPool) getNameAndType(index u2) (string,string) {
 }
 
 func (self ConstantPool) getClassName(index u2) string {
+	if index == 0 {
+		return "java.lang.Object"
+	}
+
 	classInfo := self.getConstantPoolInfo(index).(*ConstClassInfo)
 	return self.getUtf8String(classInfo.name_index)
 }

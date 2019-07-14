@@ -24,4 +24,5 @@ func (self *LineNumberTableAttr) parse(cf ClassFile,length u4,r *BigEndianReader
 	for i := range attr{
 		attr[i] = LineNumberTableAttrInfo{r.ReadU2(),r.ReadU2()}
 	}
+	*self = attr
 }

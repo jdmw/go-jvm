@@ -1,5 +1,6 @@
 package jd.jvmexample.helper.codegen.classfile.attr;
 
+import com.sun.deploy.util.StringUtils;
 import jd.jvmexample.helper.codegen.URLS;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -113,19 +114,19 @@ public class AttrStructureCodeGen {
     public static void main(String[] args) throws IOException {
 
         List<String> complete = new ArrayList<>();
-        list(false).forEach((name,e)->{
+        list(true).forEach((name,e)->{
             //AttrStructFile a = parseAttr(name,e);
             //complete.add(String.format("\t\t%scase \"%s\" : return &%s{}\n",a.finish?"":"\\\\  ",name,a.name));
-            if("StackMapTable".equals(name)) {
+            if("".contains(name)) {
                 AttrStructure s = parseAttr(name,e);
                 complete.add(String.format("\t\t%scase \"%s\" : return &%s{}\n",s.finish?"":"\\ TODO: ",name,s.name));
-                /*try(OutputStream f = new FileOutputStream(new File(gegCodeBase,"attr_"+toUnderscopeName(name)+".go"))){
+                try(OutputStream f = new FileOutputStream(new File(gegCodeBase,"attr_"+toUnderscopeName(name)+".go"))){
                     f.write(s.toString().getBytes());
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                 } catch (IOException e1) {
                     e1.printStackTrace();
-                }*/
+                }
                 System.out.println(s);
             }
         });
@@ -133,8 +134,6 @@ public class AttrStructureCodeGen {
         //gegCodeBase.getAbsolutePath()
         //System.out.println(gegCodeBase);
         //complete.forEach(System.out::println);
-
-
 
         //System.out.println("");
     }

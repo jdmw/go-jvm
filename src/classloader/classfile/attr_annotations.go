@@ -117,7 +117,6 @@ func parseAnnotationsAtt(cf ClassFile,r *BigEndianReader) *([]AnnotationInfo)  {
 	return &ans
 }
 
-
 func parseAnnotationInfo(cf ClassFile,r *BigEndianReader) AnnotationInfo {
 	an := AnnotationInfo{cf.constant_pool,r.ReadU2(),
 		make([]AnElementValuePair,r.ReadU2())}
@@ -153,3 +152,66 @@ func parseAnElementValue(cf ClassFile,r *BigEndianReader) AnElementValue {
 func (self AnnotationInfo) GetType() string{
 	return self.cp.getUtf8String(self.typeIndex)
 }
+
+
+
+
+
+/*
+*ref:https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html
+ *
+ * RuntimeVisibleParameterAnnotations_attribute {
+ *     u2 attribute_name_index;
+ *     u4 attribute_length;
+ *     u1 num_parameters;
+ *     {   u2         num_annotations;
+ *         annotation annotations[num_annotations];
+ *     } parameter_annotations[num_parameters];
+ * }
+
+ * RuntimeInvisibleParameterAnnotations_attribute {
+ *     u2 attribute_name_index;
+ *     u4 attribute_length;
+ *     u1 num_parameters;
+ *     {   u2         num_annotations;
+ *         annotation annotations[num_annotations];
+ *     } parameter_annotations[num_parameters];
+ * }
+*/
+type RuntimeInvisibleParameterAnnotationsAttr []ParameterAnnotationInfo
+type RuntimeVisibleParameterAnnotationsAttr []ParameterAnnotationInfo
+type ParameterAnnotationInfo []AnnotationInfo
+
+func (self *RuntimeInvisibleParameterAnnotationsAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+	*self = *parseParameterAnnotationInfo(cf,r)
+}
+func (self *RuntimeVisibleParameterAnnotationsAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+	*self = *parseParameterAnnotationInfo(cf,r)
+}
+
+
+func  parseParameterAnnotationInfo(cf ClassFile,r *BigEndianReader) *([]ParameterAnnotationInfo) {
+	parameter_annotations := make([]ParameterAnnotationInfo,r.ReadU2())
+	for i := range parameter_annotations {
+		parameter_annotations[i] = *parseAnnotationsAtt(cf,r)
+	}
+	return &parameter_annotations
+}
+
+
+/*
+*ref:https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html
+ *
+ * AnnotationDefault_attribute {
+ *     u2            attribute_name_index;
+ *     u4            attribute_length;
+ *     element_value default_value;
+ * }
+*/
+type AnnotationDefaultAttr struct{
+	default_value AnElementValue
+}
+func (self *AnnotationDefaultAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+	self.default_value = parseAnElementValue(cf,r)
+}
+

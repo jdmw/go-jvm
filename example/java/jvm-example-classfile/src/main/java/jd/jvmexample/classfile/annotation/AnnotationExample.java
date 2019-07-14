@@ -10,8 +10,6 @@ package jd.jvmexample.classfile.annotation;
 }
 
 @Copyright("2002 Yoyodyne Propulsion Systems, Inc.")
-
-
 class OscillationOverthruster {  }
 
 @Endorsers({"Children", "Unscrupulous dentists"})

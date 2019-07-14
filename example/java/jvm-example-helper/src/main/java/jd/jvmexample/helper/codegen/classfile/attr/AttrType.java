@@ -25,7 +25,8 @@ public class AttrType {
         this.originEnd = originEnd;
     }
 
-    public String printCode(String lineStart){
+    public String printCode(String lineStart)
+    {
         StringBuilder sb = new StringBuilder();
         for(int i=originStart;i<originEnd;i++){
             String line = this.originDef.get(i);
@@ -36,7 +37,6 @@ public class AttrType {
         }
         return sb.toString() ;
     }
-
 
     public static void main(String[] args) {
         System.out.println("");

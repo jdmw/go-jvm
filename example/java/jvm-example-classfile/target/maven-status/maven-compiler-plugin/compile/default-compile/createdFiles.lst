@@ -22,6 +22,7 @@ jd\jvmexample\classfile\start\SingleMethodClass.class
 jd\jvmexample\classfile\annotation\Endorsers.class
 jd\jvmexample\classfile\annotation\Name.class
 jd\jvmexample\classfile\start\OuterClass$InnerAnnotation.class
+jd\jvmexample\classfile\attribute\ExampleStackMapTableAttr.class
 jd\jvmexample\classfile\start\OuterClass$InnerEnum.class
 jd\jvmexample\classfile\start\OuterClass$ComplexInnerClass$1NestedClassInMethod.class
 jd\jvmexample\classfile\annotation\Petunia.class

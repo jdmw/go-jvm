@@ -20,17 +20,17 @@ public class AttrStructure {
     }
     public String toString(){
         StringBuilder sb = new StringBuilder("package classfile\n");
-        sb.append("\n/*\n*ref:").append(URLS.SPCS_CLASSFILE_FORMAT_URL).append(originCodes/*.replaceAll("\n","\n * ")*/).append("\n */\n");
+        sb.append("\n/*\n*ref:").append(URLS.SPCS_CLASSFILE_FORMAT_URL).append(originCodes.replaceAll("/\\*","//").replaceAll("\\*/","").replaceAll("\n","\n * ")).append("\n */\n");
 
-        attrsMap.forEach((name,attrs)-> {
+        attrsMap.forEach((originName,attrs)-> {
+            String name = toUpperCaseName(originName);
             sb.append("\ttype ").append(name).append(" struct{\n\t\tcp ConstantPool\n");
             attrs.forEach((n, type) -> {
                 sb.append("\t\t").append(n).append("\t").append(type).append("\n");
             });
-
             finish = true;
             // constructor
-            sb.append("\t}\n\tfunc (self ").append(name).append(") parse(cf ClassFile,"+(name.equals(this.name.replace("Attr","_attribute"))?"length u4,":"")+"r *BigEndianReader) {\n")
+            sb.append("\t}\n\tfunc (self ").append(name).append(") parse(cf ClassFile,"+(originName.equals(this.name.replace("Attr","_attribute"))?"length u4,":"")+"r *BigEndianReader) {\n")
                     .append("\t\tself.cp = cf.constant_pool\n");
 
             attrs.forEach((n, type) -> {

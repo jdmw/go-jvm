@@ -26,13 +26,15 @@ type InnerClassesInfo struct{
 }
 func (self *InnerClassesAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
 	attr := make([]InnerClassesInfo,r.ReadU2())
-	for _,info := range attr {
+	for i,info := range attr {
 		info.cp = cf.constant_pool
 		info.inner_class_info_index = r.ReadU2()
 		info.outer_class_info_index = r.ReadU2()
 		info.inner_name_index = r.ReadU2()
 		info.inner_class_access_flags = r.ReadU2()
+		attr[i] = info // TODO
 	}
+	*self = attr
 }
 
 /**

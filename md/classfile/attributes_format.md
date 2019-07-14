@@ -175,6 +175,18 @@ full_frame {
     verification_type_info stack[number_of_stack_items];
 }
 ```
+
+example :
+```java
+  public void f1(){
+    int a = 1;
+    if(a > 2){
+      int b = 2 ;
+    }else {
+      String h = "h";
+    }
+  }
+```
 ## 4.7.5 [Exceptions](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.5) Attribute
 ```text
 
@@ -216,19 +228,35 @@ InnerClasses_attribute {
 
 
 ## 4.7.7 [EnclosingMethod](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.7) Attribute
-```text
+仅用于内部内和匿名类（classfile->attribute），用于指定定义类的方法位置
 
+```java
+    class ComplexInnerClass  {
+        public void fun(){
+            class NestedClassInMethod {} // 局部类，无外部类
+            Runnable r = new Runnable() { // 匿名类，无外部类、无类名，内部类名有编译器自动命名
+                @Override
+                public void run() {
+
+                }
+            };
+        }
+    }
+```
+```text
 
 EnclosingMethod_attribute {
     u2 attribute_name_index;
     u4 attribute_length;
-    u2 class_index;
-    u2 method_index;
+    u2 class_index; // -> ComplexInnerClass
+    u2 method_index; // -> fun&()V
 }
 ```
-## 4.7.8 [Synthetic](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.8) Attribute
-```text
 
+## 4.7.8 [Synthetic](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.8) Attribute\
+A class member that does not appear in the source code must be marked using a Synthetic
+attribute, or else it must have its ACC_SYNTHETIC flag set. 
+```text
 
 Synthetic_attribute {
     u2 attribute_name_index;
@@ -236,6 +264,10 @@ Synthetic_attribute {
 }
 ```
 ## 4.7.9 [Signature](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.9) Attribute
+A Signature attribute records a signature (§4.7.9.1) for a class, interface, constructor,
+method, or field whose declaration in the Java programming language uses type
+variables or parameterized types. 
+
 ```text
 
 
@@ -245,10 +277,12 @@ Signature_attribute {
     u2 signature_index;
 }
 ```
+
+```java
+enum A{}
+```
 ## 4.7.10 [SourceFile](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.10) Attribute
 ```text
-
-
 SourceFile_attribute {
     u2 attribute_name_index;
     u4 attribute_length;
@@ -257,7 +291,6 @@ SourceFile_attribute {
 ```
 ## 4.7.11 [SourceDebugExtension](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.11) Attribute
 ```text
-
 
 SourceDebugExtension_attribute {
     u2 attribute_name_index;
@@ -562,6 +595,12 @@ AnnotationDefault_attribute {
     u2            attribute_name_index;
     u4            attribute_length;
     element_value default_value;
+}
+```
+example:
+```java
+@interface DefinedAnnotation {
+    int    id() default  1;  // default value
 }
 ```
 ## 4.7.23 [BootstrapMethods](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.23) Attribute
