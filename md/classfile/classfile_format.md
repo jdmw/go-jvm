@@ -3,6 +3,14 @@
 # The ClassFile Structure
 
 https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.4
+
+
+    <dependency>
+        <groupId>org.apache.bcel</groupId>
+        <artifactId>bcel</artifactId>
+        <version>6.3.1</version>
+    </dependency>
+
 ```
 ClassFile {
     u4             magic; // 0xCAFEBABE
