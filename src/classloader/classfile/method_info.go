@@ -13,6 +13,11 @@ func parseMethodInfo(cf 	ClassFile,r *BigEndianReader) MethodInfo{
 	return info
 }
 
+
+func (self *MethodInfo) AccessFlag() uint16 {
+	return uint16(self.access_flags)
+}
+
 func (self *MethodInfo) Name() string {
 	return self.cp.getUtf8String(self.name_index)
 }

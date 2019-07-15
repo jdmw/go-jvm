@@ -108,25 +108,25 @@ func (self *ModuleAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
 	}
 }
 
-func (self ModuleAttribute) AttributeNameIndex() u2{
+func (self ModuleAttr) AttributeNameIndex() u2{
 	return self.attribute_name_index
 }
 
-func (self ModuleAttribute) AttributeLength() u4{
+func (self ModuleAttr) AttributeLength() u4{
 	return self.attribute_length
 }
 
-func (self ModuleAttribute) ModuleNameIndex() u2{
+func (self ModuleAttr) ModuleNameIndex() u2{
 	return self.module_name_index
 }
 
 
-func (self ModuleAttribute) ModuleFlags() u2{
+func (self ModuleAttr) ModuleFlags() u2{
 	return self.module_flags
 }
 
 
-func (self ModuleAttribute) ModuleVersionIndex() u2{
+func (self ModuleAttr) ModuleVersionIndex() u2{
 	return self.module_version_index
 }
 

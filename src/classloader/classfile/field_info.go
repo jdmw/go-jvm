@@ -13,6 +13,9 @@ func parseFieldInfo(cf 	ClassFile,r *BigEndianReader) FieldInfo{
 	return info
 }
 
+func (self *FieldInfo) AccessFlag() uint16 {
+	return uint16(self.access_flags)
+}
 func (self *FieldInfo) Name() string {
 	return self.cf.constant_pool.getUtf8String(self.name_index)
 }

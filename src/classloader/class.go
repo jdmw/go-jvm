@@ -9,11 +9,13 @@ import (
 
 type Class struct {
 
-	//AccFlag u2
+	AccFlag uint16
+	inited bool
+
 	classname string
-	parentClass Class
-	interfaces []Class
-	unyyh
+	parentClass *Class
+	interfaces []*Class
+	constantpool []*ConstantPollEntry
 	fields []Field
 	methods []Method
 	attributes []Attribute
@@ -22,21 +24,22 @@ type Class struct {
 
 func (self ClassLoder) buildClass(cf *classfile.ClassFile ) *Class {
 	class := Class{}
-	thisclass,superclass,interfacenames,cp,fields,methods,attributes := cf.ClassInfo()
+	accFlag,thisclass,superclass,interfacenames,cp,fields,methods,attributes := cf.ClassInfo()
+	class.AccFlag = accFlag
 	class.classname = thisclass
-	class.parentClass = *self.LoadClass(superclass)
-	class.interfaces = make([]Class,len(interfacenames))
+	class.parentClass = self.LoadClass(superclass)
+	class.interfaces = make([]*Class,len(interfacenames))
 	for i,name := range interfacenames {
-		class.interfaces[i] = *self.LoadClass(name)
+		class.interfaces[i] = self.LoadClass(name)
 	}
 	class.fields = make([]Field,len(interfacenames))
 	for i,fieldinfo := range fields {
-		class.fields[i] = Field{class,fieldinfo.Name(),fieldinfo.Descriptor(),
+		class.fields[i] = Field{&class,fieldinfo.AccessFlag(),fieldinfo.Name(),fieldinfo.Descriptor(),
 			*buildAttributes(class,fieldinfo.Attributes())}
 	}
 	class.methods = make([]Method,len(methods))
 	for i,info := range methods {
-		class.methods[i] = Method{class,info.Name(),info.Descriptor(),
+		class.methods[i] = Method{&class,info.AccessFlag(),info.Name(),info.Descriptor(),
 			*buildAttributes(class,info.Attributes())}
 	}
 	class.attributes = *buildAttributes(class,attributes)
@@ -45,13 +48,15 @@ func (self ClassLoder) buildClass(cf *classfile.ClassFile ) *Class {
 
 
 type Method struct {
-	class Class
+	class *Class
+	AccFlag uint16
 	Name string
 	Desripter string
 	attributes []Attribute
 }
 type Field struct {
-	class Class
+	class *Class
+	AccFlag uint16
 	Name string
 	Desripter string
 	attributes []Attribute
@@ -69,4 +74,8 @@ func buildAttributes(class Class,infos []classfile.AttributeInfo) *([]Attribute)
 		attributes[i] = Attribute{class,info}
 	}
 	return &attributes
+}
+
+type ConstantPollEntry struct {
+	slot Slot
 }
