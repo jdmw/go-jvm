@@ -21,20 +21,38 @@ func parseAttributeInfo(cf ClassFile,r *BigEndianReader) AttributeInfo{
 
 func newAttributeInfo(attributeName string ,r *BigEndianReader) AttributeInfo{
 	switch attributeName {
-		case "ConstantValue" : return &ConstValueAttr{}
+		case "ConstantValue" : return &ConstantValueAttr{}
 		case "Code" : return &CodeAttr{}
-	case "SourceFile" : return &SourceFileAttr{}
+		case "StackMapTable" : return &StackMapTableAttr{}
+		case "Exceptions" : return &ExceptionsAttr{}
+		case "InnerClasses" : return &InnerClassesAttr{}
+		case "EnclosingMethod" : return &EnclosingMethodAttr{}
+		case "Synthetic" : return &SyntheticAttr{}
+		case "Signature" : return &SignatureAttr{}
+		case "SourceFile" : return &SourceFileAttr{}
+		case "SourceDebugExtension" : return &SourceDebugExtensionAttr{}
+		case "LineNumberTable" : return &LineNumberTableAttr{}
+		case "LocalVariableTable" : return &LocalVariableTableAttr{}
+		case "LocalVariableTypeTable" : return &LocalVariableTypeTableAttr{}
+		case "Deprecated" : return &DeprecatedAttr{}
+		case "RuntimeVisibleAnnotations" : return &RuntimeVisibleAnnotationsAttr{}
+		case "RuntimeInvisibleAnnotations" : return &RuntimeInvisibleAnnotationsAttr{}
+		case "RuntimeVisibleParameterAnnotations" : return &RuntimeVisibleParameterAnnotationsAttr{}
+		case "RuntimeInvisibleParameterAnnotations" : return &RuntimeInvisibleParameterAnnotationsAttr{}
+		//  case "RuntimeVisibleTypeAnnotations" : return &RuntimeVisibleTypeAnnotationsAttr{}
+		//  case "RuntimeInvisibleTypeAnnotations" : return &RuntimeInvisibleTypeAnnotationsAttr{}
+		case "AnnotationDefault" : return &AnnotationDefaultAttr{}
+		case "BootstrapMethods" : return &BootstrapMethodsAttr{}
+		case "MethodParameters" : return &MethodParametersAttr{}
+		case "Module" : return &ModuleAttr{}
+		case "ModulePackages" : return &ModulePackagesAttr{}
+		case "ModuleMainClass" : return &ModuleMainClassAttr{}
+		case "NestHost" : return &NestHostAttr{}
+		case "NestMembers" : return &NestMembersAttr{}
 		default: return &UnknownAttr{}
 	}
 }
 
-type UnknownAttr struct {
-	data []byte
-}
-
-func (self *UnknownAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
-	self.data = r.ReadByteArray(length)
-}
 
 func parseAttributes(cf ClassFile,length u2,r *BigEndianReader) Attributes{
 	attrs := make([]AttributeInfo,length)
@@ -83,3 +101,38 @@ ModuleMainClass   §4.7.27	53.0	9
 NestHost         §4.7.28	55.0	11
 NestMembers        §4.7.29	55.0	11
  */
+
+/*
+*ref:https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html
+ *
+ * Synthetic_attribute {
+ *     u2 attribute_name_index;
+ *     u4 attribute_length; // must be 0
+ * }
+*/
+type SyntheticAttr struct{
+}
+func (self SyntheticAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+}
+
+
+/*
+*ref:https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html
+ *
+ * Deprecated_attribute {
+ *     u2 attribute_name_index;
+ *     u4 attribute_length;
+ * }
+*/
+type DeprecatedAttr struct{
+}
+func (self DeprecatedAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+}
+
+type UnknownAttr struct {
+	data []byte
+}
+
+func (self *UnknownAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+	self.data = r.ReadByteArray(length)
+}

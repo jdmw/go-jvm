@@ -40,7 +40,6 @@ func (self *BigEndianReader) ReadU8() u8{
 	return u8(data)
 }
 
-
 func (self *BigEndianReader) ReadU2s() []u2{
 	count := self.ReadU2()
 	arr := make([]u2,count)

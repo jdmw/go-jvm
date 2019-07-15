@@ -24,10 +24,10 @@ type LocalVariableTableAttrInfo struct {
 }
 type LocalVariableTableAttr []LocalVariableTableAttrInfo
 
-func (self *LocalVariableTableAttrInfo) parse(cf ClassFile,length u4,r *BigEndianReader) {
-	attr := make([]LocalVariableTableAttrInfo,r.ReadU2())
-	for i := range attr{
-		attr[i] = LocalVariableTableAttrInfo{r.ReadU2(),r.ReadU2(),r.ReadU2(),r.ReadU2(),r.ReadU2(),}
+func (self *LocalVariableTableAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+	*self = make([]LocalVariableTableAttrInfo,r.ReadU2())
+	for i := range *self{
+		(*self)[i] = LocalVariableTableAttrInfo{r.ReadU2(),r.ReadU2(),r.ReadU2(),r.ReadU2(),r.ReadU2(),}
 	}
 	//self.sourcefile = cf.constant_pool.getUtf8String(r.ReadU2())
 }

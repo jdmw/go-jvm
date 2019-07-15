@@ -29,11 +29,12 @@ const CONSTANT_Package 			      = 20  // 53.0			9
 } */
 
 
-func parseConstantPoolInfo(cp ConstantPool,r *BigEndianReader) (ConstantPoolInfo,int) {
+func parseConstantPoolInfo(cp ConstantPool,r *BigEndianReader) (ConstantPoolInfo,int,int) {
 	var info ConstantPoolInfo
 	tag := r.ReadU1()
 
 	checkAccFlag := 0
+	entries := 1
 	switch tag {
 		case CONSTANT_Class: info = &ConstClassInfo{cp,0};break;
 		case CONSTANT_Fieldref :info = &ConstMemberRefInfo{cp,0,0};break;
@@ -42,8 +43,8 @@ func parseConstantPoolInfo(cp ConstantPool,r *BigEndianReader) (ConstantPoolInfo
 		case CONSTANT_String : info = &ConstStringInfo{cp,0};break;
 		case CONSTANT_Integer: info = &ConstIntegerInfo{};break;
 		case CONSTANT_Float: info = &ConstFloatInfo{};break;
-		case CONSTANT_Long : info = &ConstLongInfo{};break;
-		case CONSTANT_Double				      : info = &ConstDoubleInfo{};break;
+		case CONSTANT_Long : info = &ConstLongInfo{};entries=2;break;
+		case CONSTANT_Double				      : info = &ConstDoubleInfo{};entries=2;break;
 		case CONSTANT_NameAndType	      : info = &ConstNameAndTypeInfo{};break;
 		case CONSTANT_Utf8				        : info = &ConstUtf8Info{};break;
 		case CONSTANT_MethodHandle		    : info = &ConstMethodHandleInfo{};break;
@@ -56,7 +57,7 @@ func parseConstantPoolInfo(cp ConstantPool,r *BigEndianReader) (ConstantPoolInfo
 	}
 
 	info.readInfo(r)
-	return info,checkAccFlag
+	return info,checkAccFlag,entries
 }
 
 

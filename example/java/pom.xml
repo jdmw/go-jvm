@@ -18,6 +18,7 @@
         <module>jvm-example-common</module>
         <module>jvm-example-util</module>
         <module>jvm-example-helper</module>
+        <module>jvm-example-classfile</module>
     </modules>
 
 

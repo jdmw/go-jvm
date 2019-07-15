@@ -21,22 +21,22 @@ ClassFile {
     u2             attributes_count;
     attribute_info attributes[attributes_count];
 }
- */
+*/
 
 const CLASSFILE_MAGICNUM = 0xCAFEBABE
 
 type ClassFile struct {
-//u4            magic
-minor_version   u2             
-major_version   u2
-constant_pool 	ConstantPool
-access_flags    u2             
-this_class      u2             
-super_class     u2
-interfaces      []u2
-fields          []FieldInfo
-methods         []MethodInfo
-attributes      []AttributeInfo
+	//u4            magic
+	minor_version   u2
+	major_version   u2
+	constant_pool 	ConstantPool
+	access_flags    u2
+	this_class      u2
+	super_class     u2
+	interfaces      []u2
+	fields          []FieldInfo
+	methods         []MethodInfo
+	attributes      []AttributeInfo
 }
 
 func ParseClassFile(data []byte) *ClassFile {
@@ -82,3 +82,11 @@ func ParseClassFile(data []byte) *ClassFile {
 	return &cf
 }
 
+func (self ClassFile) ClassInfo() (string,string,[]string,ConstantPool,[]FieldInfo,[]MethodInfo,[]AttributeInfo,){
+	cp := self.constant_pool
+	interfaceNames := make([]string,len(self.interfaces))
+	for i,index := range self.interfaces{
+		interfaceNames[i] = cp.getClassName(index)
+	}
+	return cp.getClassName(self.this_class), cp.getClassName(self.super_class),interfaceNames,self.constant_pool,self.fields,self.methods,self.attributes
+}
