@@ -1,7 +1,10 @@
 package classfile
 
+import "../../util"
+
+
 type ConstantPoolInfo interface{
-  readInfo(r *BigEndianReader)
+  readInfo(r *util.BigEndianReader)
 }
 
 /* Constant pool tags */
@@ -24,12 +27,12 @@ const CONSTANT_InvokeDynamic	    = 18  // 51.0			7
 const CONSTANT_Module 			      = 19  // 53.0			9
 const CONSTANT_Package 			      = 20  // 53.0			9
 
-/*var funs = []func(r *BigEndianReader) ConstantPoolInfo {
+/*var funs = []func(r *util.BigEndianReader) ConstantPoolInfo {
 	parseConstClassInfo
 } */
 
 
-func parseConstantPoolInfo(cp ConstantPool,r *BigEndianReader) (ConstantPoolInfo,int,int) {
+func parseConstantPoolInfo(cp ConstantPool,r *util.BigEndianReader) (ConstantPoolInfo,int,int) {
 	var info ConstantPoolInfo
 	tag := r.ReadU1()
 

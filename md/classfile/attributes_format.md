@@ -38,9 +38,9 @@ NestMembers|§4.7.29|55.0|11
 
 
 ConstantValue_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 constantvalue_index;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 constantvalue_index;
 }
 ```
 ## 4.7.3 [Code](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.3) Attribute
@@ -48,19 +48,19 @@ ConstantValue_attribute {
 
 
 Code_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 max_stack;
-    u2 max_locals;
-    u4 code_length;
-    u1 code[code_length];
-    u2 exception_table_length;
-    {   u2 start_pc;
-        u2 end_pc;
-        u2 handler_pc;
-        u2 catch_type;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 max_stack;
+    U2 max_locals;
+    util.U4 code_length;
+    util.U1 code[code_length];
+    U2 exception_table_length;
+    {   U2 start_pc;
+        U2 end_pc;
+        U2 handler_pc;
+        U2 catch_type;
     } exception_table[exception_table_length];
-    u2 attributes_count;
+    U2 attributes_count;
     attribute_info attributes[attributes_count];
 }
 ```
@@ -69,9 +69,9 @@ Code_attribute {
 
 
 StackMapTable_attribute {
-    u2              attribute_name_index;
-    u4              attribute_length;
-    u2              number_of_entries;
+    U2              attribute_name_index;
+    util.U4              attribute_length;
+    U2              number_of_entries;
     stack_map_frame entries[number_of_entries];
 }
 
@@ -88,41 +88,41 @@ union verification_type_info {
 }
 
 Top_variable_info {
-    u1 tag = ITEM_Top; /* 0 */
+    util.U1 tag = ITEM_Top; /* 0 */
 }
 
 Integer_variable_info {
-    u1 tag = ITEM_Integer; /* 1 */
+    util.U1 tag = ITEM_Integer; /* 1 */
 }
 
 Float_variable_info {
-    u1 tag = ITEM_Float; /* 2 */
+    util.U1 tag = ITEM_Float; /* 2 */
 }
 
 Null_variable_info {
-    u1 tag = ITEM_Null; /* 5 */
+    util.U1 tag = ITEM_Null; /* 5 */
 }
 
 UninitializedThis_variable_info {
-    u1 tag = ITEM_UninitializedThis; /* 6 */
+    util.U1 tag = ITEM_UninitializedThis; /* 6 */
 }
 
 Object_variable_info {
-    u1 tag = ITEM_Object; /* 7 */
-    u2 cpool_index;
+    util.U1 tag = ITEM_Object; /* 7 */
+    U2 cpool_index;
 }
 
 Uninitialized_variable_info {
-    u1 tag = ITEM_Uninitialized; /* 8 */
-    u2 offset;
+    util.U1 tag = ITEM_Uninitialized; /* 8 */
+    U2 offset;
 }
 
 Long_variable_info {
-    u1 tag = ITEM_Long; /* 4 */
+    util.U1 tag = ITEM_Long; /* 4 */
 }
 
 Double_variable_info {
-    u1 tag = ITEM_Double; /* 3 */
+    util.U1 tag = ITEM_Double; /* 3 */
 }
 
 union stack_map_frame {
@@ -136,42 +136,42 @@ union stack_map_frame {
 }
 
 same_frame {
-    u1 frame_type = SAME; /* 0-63 */
+    util.U1 frame_type = SAME; /* 0-63 */
 }
 
 same_locals_1_stack_item_frame {
-    u1 frame_type = SAME_LOCALS_1_STACK_ITEM; /* 64-127 */
+    util.U1 frame_type = SAME_LOCALS_1_STACK_ITEM; /* 64-127 */
     verification_type_info stack[1];
 }
 
 same_locals_1_stack_item_frame_extended {
-    u1 frame_type = SAME_LOCALS_1_STACK_ITEM_EXTENDED; /* 247 */
-    u2 offset_delta;
+    util.U1 frame_type = SAME_LOCALS_1_STACK_ITEM_EXTENDED; /* 247 */
+    U2 offset_delta;
     verification_type_info stack[1];
 }
 
 chop_frame {
-    u1 frame_type = CHOP; /* 248-250 */
-    u2 offset_delta;
+    util.U1 frame_type = CHOP; /* 248-250 */
+    U2 offset_delta;
 }
 
 same_frame_extended {
-    u1 frame_type = SAME_FRAME_EXTENDED; /* 251 */
-    u2 offset_delta;
+    util.U1 frame_type = SAME_FRAME_EXTENDED; /* 251 */
+    U2 offset_delta;
 }
 
 append_frame {
-    u1 frame_type = APPEND; /* 252-254 */
-    u2 offset_delta;
+    util.U1 frame_type = APPEND; /* 252-254 */
+    U2 offset_delta;
     verification_type_info locals[frame_type - 251];
 }
 
 full_frame {
-    u1 frame_type = FULL_FRAME; /* 255 */
-    u2 offset_delta;
-    u2 number_of_locals;
+    util.U1 frame_type = FULL_FRAME; /* 255 */
+    U2 offset_delta;
+    U2 number_of_locals;
     verification_type_info locals[number_of_locals];
-    u2 number_of_stack_items;
+    U2 number_of_stack_items;
     verification_type_info stack[number_of_stack_items];
 }
 ```
@@ -192,10 +192,10 @@ example :
 
 
 Exceptions_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 number_of_exceptions;
-    u2 exception_index_table[number_of_exceptions];
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 number_of_exceptions;
+    U2 exception_index_table[number_of_exceptions];
 }
 ```
 ## 4.7.6 [InnerClasses](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.6) Attribute
@@ -215,13 +215,13 @@ class OuterClass {
 ```text
 
 InnerClasses_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 number_of_classes;
-    {   u2 inner_class_info_index; // 指向CONSTANT_Class_info，匿名类为0 --> OuterClass$InnerClass  
-        u2 outer_class_info_index; // 指向CONSTANT_Class_info，局部类、匿名类为0 --> OuterClass, 
-        u2 inner_name_index; // --> InnerClass
-        u2 inner_class_access_flags;  // ACC_PUBLIC
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 number_of_classes;
+    {   U2 inner_class_info_index; // 指向CONSTANT_Class_info，匿名类为0 --> OuterClass$InnerClass  
+        U2 outer_class_info_index; // 指向CONSTANT_Class_info，局部类、匿名类为0 --> OuterClass, 
+        U2 inner_name_index; // --> InnerClass
+        U2 inner_class_access_flags;  // ACC_PUBLIC
     } classes[number_of_classes];
 }
 ```
@@ -246,10 +246,10 @@ InnerClasses_attribute {
 ```text
 
 EnclosingMethod_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 class_index; // -> ComplexInnerClass
-    u2 method_index; // -> fun&()V
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 class_index; // -> ComplexInnerClass
+    U2 method_index; // -> fun&()V
 }
 ```
 
@@ -259,8 +259,8 @@ attribute, or else it must have its ACC_SYNTHETIC flag set.
 ```text
 
 Synthetic_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
 }
 ```
 ## 4.7.9 [Signature](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.9) Attribute
@@ -272,9 +272,9 @@ variables or parameterized types.
 
 
 Signature_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 signature_index;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 signature_index;
 }
 ```
 
@@ -284,18 +284,18 @@ enum A{}
 ## 4.7.10 [SourceFile](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.10) Attribute
 ```text
 SourceFile_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 sourcefile_index;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 sourcefile_index;
 }
 ```
 ## 4.7.11 [SourceDebugExtension](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.11) Attribute
 ```text
 
 SourceDebugExtension_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u1 debug_extension[attribute_length];
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    util.U1 debug_extension[attribute_length];
 }
 ```
 ## 4.7.12 [LineNumberTable](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.12) Attribute
@@ -303,11 +303,11 @@ SourceDebugExtension_attribute {
 
 
 LineNumberTable_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 line_number_table_length;
-    {   u2 start_pc;
-        u2 line_number;	
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 line_number_table_length;
+    {   U2 start_pc;
+        U2 line_number;	
     } line_number_table[line_number_table_length];
 }
 ```
@@ -316,14 +316,14 @@ LineNumberTable_attribute {
 
 
 LocalVariableTable_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 local_variable_table_length;
-    {   u2 start_pc;
-        u2 length;
-        u2 name_index;
-        u2 descriptor_index;
-        u2 index;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 local_variable_table_length;
+    {   U2 start_pc;
+        U2 length;
+        U2 name_index;
+        U2 descriptor_index;
+        U2 index;
     } local_variable_table[local_variable_table_length];
 }
 ```
@@ -332,14 +332,14 @@ LocalVariableTable_attribute {
 
 
 LocalVariableTypeTable_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 local_variable_type_table_length;
-    {   u2 start_pc;
-        u2 length;
-        u2 name_index;
-        u2 signature_index;
-        u2 index;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 local_variable_type_table_length;
+    {   U2 start_pc;
+        U2 length;
+        U2 name_index;
+        U2 signature_index;
+        U2 index;
     } local_variable_type_table[local_variable_type_table_length];
 }
 ```
@@ -348,8 +348,8 @@ LocalVariableTypeTable_attribute {
 
 
 Deprecated_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
 }
 ```
 ## 4.7.16 [RuntimeVisibleAnnotations](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.16) Attribute
@@ -357,34 +357,34 @@ Deprecated_attribute {
 
 
 RuntimeVisibleAnnotations_attribute {
-    u2         attribute_name_index;
-    u4         attribute_length;
-    u2         num_annotations;
+    U2         attribute_name_index;
+    util.U4         attribute_length;
+    U2         num_annotations;
     annotation annotations[num_annotations];
 }
 
 annotation {
-    u2 type_index;
-    u2 num_element_value_pairs;
-    {   u2            element_name_index;
+    U2 type_index;
+    U2 num_element_value_pairs;
+    {   U2            element_name_index;
         element_value value;
     } element_value_pairs[num_element_value_pairs];
 }
 
 element_value {
-    u1 tag;
+    util.U1 tag;
     union {
-        u2 const_value_index;
+        U2 const_value_index;
 
-        {   u2 type_name_index;
-            u2 const_name_index;
+        {   U2 type_name_index;
+            U2 const_name_index;
         } enum_const_value;
 
-        u2 class_info_index;
+        U2 class_info_index;
 
         annotation annotation_value;
 
-        {   u2            num_values;
+        {   U2            num_values;
             element_value values[num_values];
         } array_value;
     } value;
@@ -395,9 +395,9 @@ element_value {
 
 
 RuntimeInvisibleAnnotations_attribute {
-    u2         attribute_name_index;
-    u4         attribute_length;
-    u2         num_annotations;
+    U2         attribute_name_index;
+    util.U4         attribute_length;
+    U2         num_annotations;
     annotation annotations[num_annotations];
 }
 ```
@@ -417,10 +417,10 @@ RuntimeVisibleParameterAnnotations与RuntimeInvisibleAnnotations的区别在于�
 
 ```text
 RuntimeVisibleParameterAnnotations_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u1 num_parameters;
-    {   u2         num_annotations;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    util.U1 num_parameters;
+    {   U2         num_annotations;
         annotation annotations[num_annotations];
     } parameter_annotations[num_parameters];
 }
@@ -444,10 +444,10 @@ example:
 
 
 RuntimeInvisibleParameterAnnotations_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u1 num_parameters;
-    {   u2         num_annotations;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    util.U1 num_parameters;
+    {   U2         num_annotations;
         annotation annotations[num_annotations];
     } parameter_annotations[num_parameters];
 }
@@ -457,14 +457,14 @@ RuntimeInvisibleParameterAnnotations_attribute {
 
 
 RuntimeVisibleTypeAnnotations_attribute {
-    u2              attribute_name_index;
-    u4              attribute_length;
-    u2              num_annotations;
+    U2              attribute_name_index;
+    util.U4              attribute_length;
+    U2              num_annotations;
     type_annotation annotations[num_annotations];
 }
 
 type_annotation {
-    u1 target_type;
+    util.U1 target_type;
     union {
         type_parameter_target;
         supertype_target;
@@ -478,56 +478,56 @@ type_annotation {
         type_argument_target;
     } target_info;
     type_path target_path;
-    u2        type_index;
-    u2        num_element_value_pairs;
-    {   u2            element_name_index;
+    U2        type_index;
+    U2        num_element_value_pairs;
+    {   U2            element_name_index;
         element_value value;
     } element_value_pairs[num_element_value_pairs];
 }
 
 type_parameter_target {
-    u1 type_parameter_index;
+    util.U1 type_parameter_index;
 }
 
 supertype_target {
-    u2 supertype_index;
+    U2 supertype_index;
 }
 
 type_parameter_bound_target {
-    u1 type_parameter_index;
-    u1 bound_index;
+    util.U1 type_parameter_index;
+    util.U1 bound_index;
 }
 
 empty_target {
 }
 
 formal_parameter_target {
-    u1 formal_parameter_index;
+    util.U1 formal_parameter_index;
 }
 
 throws_target {
-    u2 throws_type_index;
+    U2 throws_type_index;
 }
 
 localvar_target {
-    u2 table_length;
-    {   u2 start_pc;
-        u2 length;
-        u2 index;
+    U2 table_length;
+    {   U2 start_pc;
+        U2 length;
+        U2 index;
     } table[table_length];
 }
 
 catch_target {
-    u2 exception_table_index;
+    U2 exception_table_index;
 }
 
 offset_target {
-    u2 offset;
+    U2 offset;
 }
 
 type_argument_target {
-    u2 offset;
-    u1 type_argument_index;
+    U2 offset;
+    util.U1 type_argument_index;
 }
 
 @Foo String[][]   // Annotates the class type String
@@ -546,9 +546,9 @@ List&lt;@Foo ? extends String&gt;
 List&lt;? extends @Foo String&gt;
 
 type_path {
-    u1 path_length;
-    {   u1 type_path_kind;
-        u1 type_argument_index;
+    util.U1 path_length;
+    {   util.U1 type_path_kind;
+        util.U1 type_argument_index;
     } path[path_length];
 }
 
@@ -581,9 +581,9 @@ class Outer {
 
 
 RuntimeInvisibleTypeAnnotations_attribute {
-    u2              attribute_name_index;
-    u4              attribute_length;
-    u2              num_annotations;
+    U2              attribute_name_index;
+    util.U4              attribute_length;
+    U2              num_annotations;
     type_annotation annotations[num_annotations];
 }
 ```
@@ -592,8 +592,8 @@ RuntimeInvisibleTypeAnnotations_attribute {
 
 
 AnnotationDefault_attribute {
-    u2            attribute_name_index;
-    u4            attribute_length;
+    U2            attribute_name_index;
+    util.U4            attribute_length;
     element_value default_value;
 }
 ```
@@ -608,25 +608,26 @@ example:
 
 
 BootstrapMethods_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 num_bootstrap_methods;
-    {   u2 bootstrap_method_ref;
-        u2 num_bootstrap_arguments;
-        u2 bootstrap_arguments[num_bootstrap_arguments];
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 num_bootstrap_methods;
+    {   U2 bootstrap_method_ref;
+        U2 num_bootstrap_arguments;
+        U2 bootstrap_arguments[num_bootstrap_arguments];
     } bootstrap_methods[num_bootstrap_methods];
 }
 ```
+
 ## 4.7.24 [MethodParameters](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.24) Attribute
 ```text
 
 
 MethodParameters_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u1 parameters_count;
-    {   u2 name_index;
-        u2 access_flags;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    util.U1 parameters_count;
+    {   U2 name_index;
+        U2 access_flags;
     } parameters[parameters_count];
 }
 ```
@@ -635,40 +636,40 @@ MethodParameters_attribute {
 
 
 Module_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
 
-    u2 module_name_index;
-    u2 module_flags;
-    u2 module_version_index;
+    U2 module_name_index;
+    U2 module_flags;
+    U2 module_version_index;
 
-    u2 requires_count;
-    {   u2 requires_index;
-        u2 requires_flags;
-        u2 requires_version_index;
+    U2 requires_count;
+    {   U2 requires_index;
+        U2 requires_flags;
+        U2 requires_version_index;
     } requires[requires_count];
 
-    u2 exports_count;
-    {   u2 exports_index;
-        u2 exports_flags;
-        u2 exports_to_count;
-        u2 exports_to_index[exports_to_count];
+    U2 exports_count;
+    {   U2 exports_index;
+        U2 exports_flags;
+        U2 exports_to_count;
+        U2 exports_to_index[exports_to_count];
     } exports[exports_count];
 
-    u2 opens_count;
-    {   u2 opens_index;
-        u2 opens_flags;
-        u2 opens_to_count;
-        u2 opens_to_index[opens_to_count];
+    U2 opens_count;
+    {   U2 opens_index;
+        U2 opens_flags;
+        U2 opens_to_count;
+        U2 opens_to_index[opens_to_count];
     } opens[opens_count];
 
-    u2 uses_count;
-    u2 uses_index[uses_count];
+    U2 uses_count;
+    U2 uses_index[uses_count];
 
-    u2 provides_count;
-    {   u2 provides_index;
-        u2 provides_with_count;
-        u2 provides_with_index[provides_with_count];
+    U2 provides_count;
+    {   U2 provides_index;
+        U2 provides_with_count;
+        U2 provides_with_index[provides_with_count];
     } provides[provides_count];
 }
 ```
@@ -677,10 +678,10 @@ Module_attribute {
 
 
 ModulePackages_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 package_count;
-    u2 package_index[package_count];
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 package_count;
+    U2 package_index[package_count];
 }
 ```
 ## 4.7.27 [ModuleMainClass](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.27) Attribute
@@ -688,9 +689,9 @@ ModulePackages_attribute {
 
 
 ModuleMainClass_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 main_class_index;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 main_class_index;
 }
 ```
 ## 4.7.28 [NestHost](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.28) Attribute
@@ -698,9 +699,9 @@ ModuleMainClass_attribute {
 
 
 NestHost_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 host_class_index;
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 host_class_index;
 }
 ```
 ## 4.7.29 [NestMembers](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.29) Attribute
@@ -708,10 +709,10 @@ NestHost_attribute {
 
 
 NestMembers_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 number_of_classes;
-    u2 classes[number_of_classes];
+    U2 attribute_name_index;
+    util.U4 attribute_length;
+    U2 number_of_classes;
+    U2 classes[number_of_classes];
 }
 ```
 

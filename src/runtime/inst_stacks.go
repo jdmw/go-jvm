@@ -1,0 +1,15 @@
+package runtime
+
+/**
+Stack
+87 (0x57) pop
+88 (0x58) pop2
+89 (0x59) dup
+90 (0x5a) dup_x1
+91 (0x5b) dup_x2
+92 (0x5c) dup2
+93 (0x5d) dup2_x1
+94 (0x5e) dup2_x2
+95 (0x5f) swap
+
+ */

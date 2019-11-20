@@ -1,14 +1,17 @@
 package classfile
 
+import "../../util"
+
+
 type FieldInfo struct {
 	cf 	ClassFile
-	access_flags      u2
-	name_index        u2
-	descriptor_index  u2
+	access_flags      util.U2
+	name_index        util.U2
+	descriptor_index  util.U2
 	attributes Attributes
 }
 
-func parseFieldInfo(cf 	ClassFile,r *BigEndianReader) FieldInfo{
+func parseFieldInfo(cf 	ClassFile,r *util.BigEndianReader) FieldInfo{
 	info := FieldInfo{cf,r.ReadU2(),r.ReadU2(),r.ReadU2(),parseAttributes(cf,r.ReadU2(),r)}
 	return info
 }
@@ -24,6 +27,6 @@ func (self *FieldInfo) Descriptor() string {
 	return self.cf.constant_pool.getUtf8String(self.descriptor_index)
 }
 
-func (self *FieldInfo) Attributes() Attributes {
-	return self.attributes
+func (self *FieldInfo) Attributes() *Attributes {
+	return &self.attributes
 }

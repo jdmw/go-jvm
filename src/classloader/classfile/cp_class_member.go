@@ -1,31 +1,34 @@
 package classfile
 
+import "../../util"
+
+
 /**
 CONSTANT_Fieldref_info {
-    u1 tag;
-    u2 class_index;
-    u2 name_and_type_index;
+    util.U1 tag;
+    util.U2 class_index;
+    util.U2 name_and_type_index;
 }
 
 CONSTANT_Methodref_info {
-    u1 tag;
-    u2 class_index;
-    u2 name_and_type_index;
+    util.U1 tag;
+    util.U2 class_index;
+    util.U2 name_and_type_index;
 }
 
 CONSTANT_InterfaceMethodref_info {
-    u1 tag;
-    u2 class_index;
-    u2 name_and_type_index;
+    util.U1 tag;
+    util.U2 class_index;
+    util.U2 name_and_type_index;
 }
  */
 
 type ConstClassInfo struct {
 	cp ConstantPool
-	name_index u2
+	name_index util.U2
 }
 
-func (self *ConstClassInfo) readInfo(r *BigEndianReader) {
+func (self *ConstClassInfo) readInfo(r *util.BigEndianReader) {
 	self.name_index = r.ReadU2()
 }
 
@@ -35,11 +38,11 @@ func (self *ConstClassInfo) Name() string {
 
 type ConstMemberRefInfo struct {
 	cp ConstantPool
-	class_index			u2
-	name_and_type_index u2
+	class_index			util.U2
+	name_and_type_index util.U2
 }
 
-func (self *ConstMemberRefInfo) readInfo(r *BigEndianReader) {
+func (self *ConstMemberRefInfo) readInfo(r *util.BigEndianReader) {
 	self.class_index = r.ReadU2()
 	self.name_and_type_index = r.ReadU2()
 }
@@ -54,19 +57,19 @@ func (self *ConstMemberRefInfo) NameAndType() (string,string) {
 
 /**
 CONSTANT_NameAndType_info {
-    u1 tag;
-    u2 name_index;
-    u2 descriptor_index;
+    util.U1 tag;
+    util.U2 name_index;
+    util.U2 descriptor_index;
 }
  */
 
 type ConstNameAndTypeInfo struct {
 	cp ConstantPool
-	name_index u2
-	descriptor_index u2
+	name_index util.U2
+	descriptor_index util.U2
 }
 
-func (self *ConstNameAndTypeInfo) readInfo(r *BigEndianReader) {
+func (self *ConstNameAndTypeInfo) readInfo(r *util.BigEndianReader) {
 	self.name_index = r.ReadU2()
 	self.descriptor_index = r.ReadU2()
 }
@@ -82,9 +85,9 @@ func (self *ConstNameAndTypeInfo) Descriptor() string {
 
 /**
 CONSTANT_MethodHandle_info {
-    u1 tag;
-    u1 reference_kind;
-    u2 reference_index;
+    util.U1 tag;
+    util.U1 reference_kind;
+    util.U2 reference_index;
 }
 */
 
@@ -100,16 +103,16 @@ const REF_invokeInterface   = 9
 
 type ConstMethodHandleInfo struct {
 	cp ConstantPool
-	reference_kind u1
-	reference_index u2
+	reference_kind util.U1
+	reference_index util.U2
 }
 
-func (self *ConstMethodHandleInfo) readInfo(r *BigEndianReader) {
+func (self *ConstMethodHandleInfo) readInfo(r *util.BigEndianReader) {
 	self.reference_kind = r.ReadU1()
 	self.reference_index = r.ReadU2()
 }
 
-func (self *ConstMethodHandleInfo) ClassMember()  (string,u1,string,string) {
+func (self *ConstMethodHandleInfo) ClassMember()  (string,util.U1,string,string) {
 	info := self.cp[self.reference_index].(*ConstMemberRefInfo)
 	classname := self.cp.getClassName(info.class_index)
 	name,desp := self.cp.getNameAndType(info.name_and_type_index)
@@ -118,17 +121,17 @@ func (self *ConstMethodHandleInfo) ClassMember()  (string,u1,string,string) {
 
 /**
 CONSTANT_MethodType_info {
-    u1 tag;
-    u2 descriptor_index;
+    util.U1 tag;
+    util.U2 descriptor_index;
 }
 */
 
 type ConstMethodTypeInfo struct {
 	cp ConstantPool
-	descriptor_index u2
+	descriptor_index util.U2
 }
 
-func (self *ConstMethodTypeInfo) readInfo(r *BigEndianReader) {
+func (self *ConstMethodTypeInfo) readInfo(r *util.BigEndianReader) {
 	self.descriptor_index = r.ReadU2()
 }
 
@@ -139,25 +142,25 @@ func (self *ConstMethodTypeInfo) Descriptor()  string {
 
 /**
 CONSTANT_Dynamic_info {
-    u1 tag;
-    u2 bootstrap_method_attr_index;
-    u2 name_and_type_index;
+    util.U1 tag;
+    util.U2 bootstrap_method_attr_index;
+    util.U2 name_and_type_index;
 }
 
 CONSTANT_InvokeDynamic_info {
-    u1 tag;
-    u2 bootstrap_method_attr_index;
-    u2 name_and_type_index;
+    util.U1 tag;
+    util.U2 bootstrap_method_attr_index;
+    util.U2 name_and_type_index;
 }
 */
 
 type ConstDynamicInfo struct {
 	cp ConstantPool
-	bootstrap_method_attr_index u2
-	name_and_type_index u2
+	bootstrap_method_attr_index util.U2
+	name_and_type_index util.U2
 }
 
-func (self *ConstDynamicInfo) readInfo(r *BigEndianReader) {
+func (self *ConstDynamicInfo) readInfo(r *util.BigEndianReader) {
 	self.bootstrap_method_attr_index = r.ReadU2()
 	self.name_and_type_index = r.ReadU2()
 }
@@ -168,11 +171,11 @@ func (self *ConstDynamicInfo) NameAndType()  (string,string) {
 
 type ConstInvokeDynamicInfo struct {
 	cp ConstantPool
-	bootstrap_method_attr_index u2
-	name_and_type_index u2
+	bootstrap_method_attr_index util.U2
+	name_and_type_index util.U2
 }
 
-func (self *ConstInvokeDynamicInfo) readInfo(r *BigEndianReader) {
+func (self *ConstInvokeDynamicInfo) readInfo(r *util.BigEndianReader) {
 	self.bootstrap_method_attr_index = r.ReadU2()
 	self.name_and_type_index = r.ReadU2()
 }
@@ -184,8 +187,8 @@ func (self *ConstInvokeDynamicInfo) NameAndType()  (string,string) {
 
 /**
 CONSTANT_Module_info {
-    u1 tag;
-    u2 name_index;
+    util.U1 tag;
+    util.U2 name_index;
 }
 check :the ACC_MODULE flag is set
  */
@@ -193,10 +196,10 @@ check :the ACC_MODULE flag is set
 
 type ConstModuleInfo struct {
 	cp ConstantPool
-	name_index u2
+	name_index util.U2
 }
 
-func (self *ConstModuleInfo) readInfo(r *BigEndianReader) {
+func (self *ConstModuleInfo) readInfo(r *util.BigEndianReader) {
 	self.name_index = r.ReadU2()
 }
 
@@ -207,18 +210,18 @@ func (self *ConstModuleInfo) Name()  string {
 
 /**
 CONSTANT_Package_info {
-    u1 tag;
-    u2 name_index;
+    util.U1 tag;
+    util.U2 name_index;
 }
 check: the ACC_MODULE flag is set.
  */
 
 type ConstPackageInfo struct {
 	cp ConstantPool
-	name_index u2
+	name_index util.U2
 }
 
-func (self *ConstPackageInfo) readInfo(r *BigEndianReader) {
+func (self *ConstPackageInfo) readInfo(r *util.BigEndianReader) {
 	self.name_index = r.ReadU2()
 }
 

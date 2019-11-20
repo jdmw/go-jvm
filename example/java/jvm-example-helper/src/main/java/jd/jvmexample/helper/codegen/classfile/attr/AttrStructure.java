@@ -30,7 +30,7 @@ public class AttrStructure {
             });
             finish = true;
             // constructor
-            sb.append("\t}\n\tfunc (self ").append(name).append(") parse(cf ClassFile,"+(originName.equals(this.name.replace("Attr","_attribute"))?"length u4,":"")+"r *BigEndianReader) {\n")
+            sb.append("\t}\n\tfunc (self ").append(name).append(") parse(cf ClassFile,"+(originName.equals(this.name.replace("Attr","_attribute"))?"length util.U4,":"")+"r *util.BigEndianReader) {\n")
                     .append("\t\tself.cp = cf.constant_pool\n");
 
             attrs.forEach((n, type) -> {

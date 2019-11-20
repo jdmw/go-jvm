@@ -5,19 +5,22 @@ import (
 	"unicode/utf16"
 )
 
+import "../../util"
+
+
 /**
 CONSTANT_String_info {
-    u1 tag;
-    u2 string_index;
+    util.U1 tag;
+    util.U2 string_index;
 }
  */
 
 type ConstStringInfo struct{
 	cp ConstantPool
-	stringIndex u2
+	stringIndex util.U2
 }
 
-func (self *ConstStringInfo) readInfo(r *BigEndianReader) {
+func (self *ConstStringInfo) readInfo(r *util.BigEndianReader) {
 	self.stringIndex = r.ReadU2()
 }
 
@@ -27,9 +30,9 @@ func (self *ConstStringInfo) String() string{
 
 /**
 CONSTANT_Utf8_info {
-    u1 tag;
-    u2 length;
-    u1 bytes[length];
+    util.U1 tag;
+    util.U2 length;
+    util.U1 bytes[length];
 }
  */
 
@@ -37,9 +40,9 @@ type ConstUtf8Info struct{
 	str string
 }
 
-func (self *ConstUtf8Info) readInfo(r *BigEndianReader) {
+func (self *ConstUtf8Info) readInfo(r *util.BigEndianReader) {
 	length := r.ReadU2()
-	bytes := r.ReadByteArray(u4(length))
+	bytes := r.ReadByteArray(util.U4(length))
 	self.str = decodeMUTF8(bytes)
 }
 
