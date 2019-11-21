@@ -72,3 +72,10 @@ func (self *LCONST_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 
 
 
+type BIPUSH struct {
+}
+
+func (self *BIPUSH) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	smallInt := reader.ReadU1()
+	frame.OprandStack.PushInt(smallInt)
+}

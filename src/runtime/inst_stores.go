@@ -1,6 +1,9 @@
 package runtime
 
-
+import (
+	"../util"
+	"unsafe"
+)
 /**
  * instrument
  *  ?store : pop var out of Oprand Stack and then store into local variable
@@ -40,3 +43,219 @@ Stores
 85 (0x55) castore
 86 (0x56) sastore
  */
+
+
+type U4STORE struct {
+}
+
+/**
+	The index is an unsigned byte that must be an index into the local
+	variable array of the current frame (§2.6). The value on the top
+	of the operand stack must be of type int. It is popped from the
+	operand stack, and the value of the local variable at index is set
+	to value.
+ */
+func (self *U4STORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	index := reader.ReadU1()
+	num := frame.OprandStack.PopU4()
+	frame.LocalVariables.SetU4(util.U2(index),num )
+}
+
+type U4STORE_N struct {
+	index util.U1
+}
+
+/**
+The index is an unsigned byte that must be an index into the local
+variable array of the current frame (§2.6). The value on the top
+of the operand stack must be of type int. It is popped from the
+operand stack, and the value of the local variable at index is set
+to value.
+*/
+func (self *U4STORE_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	index := self.index
+	num := frame.OprandStack.PopU4()
+	frame.LocalVariables.SetU4(util.U2(index),num )
+}
+
+
+type U8STORE struct {
+}
+
+/**
+The index is an unsigned byte that must be an index into the local
+variable array of the current frame (§2.6). The value on the top
+of the operand stack must be of type int. It is popped from the
+operand stack, and the value of the local variable at index is set
+to value.
+*/
+func (self *U8STORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	index := reader.ReadU1()
+	num := frame.OprandStack.PopU8()
+	frame.LocalVariables.SetU8(util.U2(index),num )
+}
+
+type U8STORE_N struct {
+	index util.U1
+}
+
+/**
+The index is an unsigned byte that must be an index into the local
+variable array of the current frame (§2.6). The value on the top
+of the operand stack must be of type int. It is popped from the
+operand stack, and the value of the local variable at index is set
+to value.
+*/
+func (self *U8STORE_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	index := self.index
+	num := frame.OprandStack.PopU8()
+	frame.LocalVariables.SetU8(util.U2(index),num )
+}
+
+
+type IASTORE struct {
+}
+
+func (self *IASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	value := frame.OprandStack.PopInt()
+	index := frame.OprandStack.PopInt()
+	arrayRef := frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,arrayRef)){
+		return
+	}
+	array := *(*util.Ints)(unsafe.Pointer(arrayRef))
+	if(false == checkArrayLen(frame,len(array),index) ){
+		return
+	}
+	array[int(index)] = value
+}
+
+
+type LASTORE struct {
+}
+
+func (self *LASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	value := frame.OprandStack.PopLong()
+	index := frame.OprandStack.PopInt()
+	arrayRef := frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,arrayRef)){
+		return
+	}
+	array := *(*util.Longs)(unsafe.Pointer(arrayRef))
+	if(false == checkArrayLen(frame,len(array),index) ){
+		return
+	}
+	array[int(index)] = value
+}
+
+
+type FASTORE struct {
+}
+
+func (self *FASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	value := frame.OprandStack.PopFloat()
+	index := frame.OprandStack.PopInt()
+	arrayRef := frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,arrayRef)){
+		return
+	}
+	array := *(*util.FLoats)(unsafe.Pointer(arrayRef))
+	if(false == checkArrayLen(frame,len(array),index) ){
+		return
+	}
+	array[int(index)] = value
+}
+
+
+type DASTORE struct {
+}
+
+func (self *DASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	value := frame.OprandStack.PopDouble()
+	index := frame.OprandStack.PopInt()
+	arrayRef := frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,arrayRef)){
+		return
+	}
+	array := *(*util.Doubles)(unsafe.Pointer(arrayRef))
+	if(false == checkArrayLen(frame,len(array),index) ){
+		return
+	}
+	array[int(index)] = value
+}
+
+
+type AASTORE struct {
+}
+
+func (self *AASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	value := frame.OprandStack.PopRef()
+	index := frame.OprandStack.PopInt()
+	arrayRef := frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,arrayRef)){
+		return
+	}
+	array := *(*util.References)(unsafe.Pointer(arrayRef))
+	if(false == checkArrayLen(frame,len(array),index) ){
+		return
+	}
+	array[int(index)] = value
+}
+
+
+type BASTORE struct {
+}
+
+func (self *BASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	value := byte(frame.OprandStack.PopInt())
+	index := frame.OprandStack.PopInt()
+	arrayRef := frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,arrayRef)){
+		return
+	}
+	array := *(*util.Bytes)(unsafe.Pointer(arrayRef))
+	if(false == checkArrayLen(frame,len(array),index) ){
+		return
+	}
+	array[int(index)] = value
+}
+
+
+type CASTORE struct {
+}
+
+func (self *CASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	value := util.Char(frame.OprandStack.PopU4())
+	index := frame.OprandStack.PopInt()
+	arrayRef := frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,arrayRef)){
+		return
+	}
+	array := *(*util.Chars)(unsafe.Pointer(arrayRef))
+	if(false == checkArrayLen(frame,len(array),index) ){
+		return
+	}
+	array[int(index)] = value
+}
+
+
+type SASTORE struct {
+}
+
+func (self *SASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	value := util.Short(frame.OprandStack.PopInt())
+	index := frame.OprandStack.PopInt()
+	arrayRef := frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,arrayRef)){
+		return
+	}
+	array := *(*util.Shorts)(unsafe.Pointer(arrayRef))
+	if(false == checkArrayLen(frame,len(array),index) ){
+		return
+	}
+	array[int(index)] = value
+}
+
+
+
+

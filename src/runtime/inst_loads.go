@@ -44,10 +44,7 @@ Loads
 51 (0x33) baload
 52 (0x34) caload
 53 (0x35) saload
-
-
  */
-
 
 //iload_0  ~ iload_3
 
@@ -109,17 +106,85 @@ func (self *ALOAD_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type IALOAD struct {
 }
 
+
 func (self *IALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 	index := frame.OprandStack.PopInt()
 	ref :=  frame.OprandStack.PopRef()
-	if( ref == nil){
-		frame.SetException(EXP_NULL_POINT)
+	if(!checkNullPointer(frame,ref)) {
+		return
 	}
-	arr := *((*[]int32)(unsafe.Pointer(ref)))
-	if( index <0 || index >= int32(len(arr))){
-		frame.SetException(EXP_ARRAY_INDEX_OUT_OF_BOUNDS)
+	arr := *((*util.Ints)(unsafe.Pointer(ref)))
+	if( false == checkArrayLen(frame,len(arr),index)){
+		return
 	}
 	frame.OprandStack.PushInt(arr[index] )
+}
+
+type LALOAD struct {
+}
+
+
+func (self *LALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	index := frame.OprandStack.PopInt()
+	ref :=  frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,ref)) {
+		return
+	}
+	arr := *((*[]int64)(unsafe.Pointer(ref)))
+	if( false == checkArrayLen(frame,len(arr),index)){
+		return
+	}
+	frame.OprandStack.PushLong(arr[index] )
+}
+
+type FALOAD struct {
+}
+
+
+func (self *FALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	index := frame.OprandStack.PopInt()
+	ref :=  frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,ref)) {
+		return
+	}
+	arr := *((*util.FLoats)(unsafe.Pointer(ref)))
+	if( false == checkArrayLen(frame,len(arr),index)){
+		return
+	}
+	frame.OprandStack.PushFloat(arr[index] )
+}
+
+type DALOAD struct {
+}
+
+
+func (self *DALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	index := frame.OprandStack.PopInt()
+	ref :=  frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,ref)) {
+		return
+	}
+	arr := *((*util.Doubles)(unsafe.Pointer(ref)))
+	if( false == checkArrayLen(frame,len(arr),index)){
+		return
+	}
+	frame.OprandStack.PushDouble(arr[index] )
+}
+
+type AALOAD struct {
+}
+
+func (self *AALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	index := frame.OprandStack.PopInt()
+	ref :=  frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,ref)) {
+		return
+	}
+	arr := *((*util.References)(unsafe.Pointer(ref))) // byte array or boolean array
+	if( false == checkArrayLen(frame,len(arr),index)){
+		return
+	}
+	frame.OprandStack.PushRef(arr[index])
 }
 
 type BALOAD struct {
@@ -128,31 +193,77 @@ type BALOAD struct {
 func (self *BALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 	index := frame.OprandStack.PopInt()
 	ref :=  frame.OprandStack.PopRef()
-	if( ref == nil){
-		frame.SetException(EXP_NULL_POINT)
+	if(!checkNullPointer(frame,ref)) {
+		return
 	}
 	arr := *((*[]byte)(unsafe.Pointer(ref))) // byte array or boolean array
-	if( index <0 || index >= int32(len(arr))){
-		frame.SetException(EXP_ARRAY_INDEX_OUT_OF_BOUNDS)
+	if( false == checkArrayLen(frame,len(arr),index)){
+		return
 	}
 	value := arr[index]
-	frame.OprandStack.PushInt(int8(value))
+	frame.OprandStack.PushInt(int32(int8(value)))
 }
 
 
+type CALOAD struct {
+}
+
+func (self *CALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	index := frame.OprandStack.PopInt()
+	ref :=  frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,ref)) {
+		return
+	}
+	arr := *((*util.Chars)(unsafe.Pointer(ref))) // byte array or boolean array
+	if( false == checkArrayLen(frame,len(arr),index)){
+		return
+	}
+	frame.OprandStack.PushU4(util.U4(arr[index]))
+}
+
+type SALOAD struct {
+}
+
+
+func (self *SALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+	index := frame.OprandStack.PopInt()
+	ref :=  frame.OprandStack.PopRef()
+	if(!checkNullPointer(frame,ref)) {
+		return
+	}
+	arr := *((*util.Shorts)(unsafe.Pointer(ref))) // byte array or boolean array
+	if( false == checkArrayLen(frame,len(arr),index)){
+		return
+	}
+	frame.OprandStack.PushInt(int32(int16(arr[index])))
+}
 
 func InstLoadTest(){
 	reader := util.NewBigEndianReader(make([]byte,10))
 
 	// test iaload
 	frame := NewStackFrame(10,10)
-	iarr := []int{-2,-1,0,1,2,3,4}
-	frame.OprandStack.PushRef(unsafe.Pointer(&iarr))
+	iarr := util.Ints{-2,-1,0,1,2,3,4}
+	frame.OprandStack.PushRef(util.Reference(unsafe.Pointer(&iarr)))
 	frame.OprandStack.PushInt(1)
 	iaload.execute(reader,frame)
 	rst := int(frame.OprandStack.PopInt())
-	fmt.Println(iarr[1] == rst  )
+	fmt.Println(int(iarr[1]) == rst  )
 
+}
 
+func checkNullPointer(frame *StackFrame,ref util.Reference )  bool {
+	if( ref == nil){
+		frame.SetException(EXP_NULL_POINT)
+		return false
+	}
+	return true
+}
 
+func checkArrayLen(frame *StackFrame, arrlen int, index int32) bool{
+	if( index <0 || index >= int32(arrlen)){
+		frame.SetException(EXP_ARRAY_INDEX_OUT_OF_BOUNDS)
+		return false
+	}
+	return true
 }
