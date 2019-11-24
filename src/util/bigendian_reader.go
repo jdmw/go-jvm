@@ -2,12 +2,26 @@ package util
 
 import (
 	"encoding/binary"
+	"unsafe"
 )
 
-type U1 byte
+type U1 byte // 0 ~ 255
 type U2 uint16
 type U4 uint32
 type U8 uint64
+type Char uint16
+type Short int16
+type JByte int8 // java byte array,every elements is a signed 8-bits integer
+type JBytes []int8 // java byte array,every elements is a signed 8-bits integer
+type Chars []Char
+type Shorts []Short
+type Ints []int32
+type Long int64
+type Longs []int64
+type FLoats []float32
+type Doubles []float64
+type Reference unsafe.Pointer
+type References []Reference
 
 type BigEndianReader struct{
 	offset U4
@@ -22,6 +36,9 @@ func (self *BigEndianReader) Offset() U4 {
 	return self.offset
 }
 
+func (self *BigEndianReader) SetOffset(offset U4) {
+	self.offset = offset
+}
 func (self *BigEndianReader) ReadU1() U1{
 	data := self.data[self.offset]
 	self.offset++
@@ -40,6 +57,12 @@ func (self *BigEndianReader) ReadU4() U4{
 	data := binary.BigEndian.Uint32(self.data[self.offset:])
 	self.offset += 4
 	return U4(data)
+}
+
+
+func (self *BigEndianReader) ReadInt32() int32{
+	data := self.ReadU4()
+	return *(*int32)(unsafe.Pointer(&data ))
 }
 
 

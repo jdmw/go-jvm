@@ -57,3 +57,7 @@ func (self *Method) Load()  {
 func (self *Method) IsNative() bool {
 	return classfile.ACC_NATIVE & self.AccFlag == 1
 }
+
+func (self *Method) GetClass() *Class {
+	return self.class
+}

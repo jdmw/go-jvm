@@ -1,8 +1,8 @@
 package main
 
 import (
-	"../runtime"
 	"fmt"
+	"unsafe"
 )
 
 type info struct {
@@ -26,7 +26,14 @@ func (self *infos) parse() {
 
 func main(){
 	//util.SlotTest()
-	runtime.InstLoadTest()
+	//runtime.InstLoadTest()
+	b := -14
+	ui := *(*uint32)(unsafe.Pointer(&b))
+	shr := ui >> 1
+	rst := *(*int32)(unsafe.Pointer(&shr))
+	fmt.Println(b)
+	fmt.Println(shr )
+	fmt.Println(rst )
 /*	i := int(-1)
 	iu := uint32(i)
 	ui := *(*int)(unsafe.Pointer(&i))

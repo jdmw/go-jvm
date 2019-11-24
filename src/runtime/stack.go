@@ -19,6 +19,7 @@ type Stack struct {
 type StackFrame struct {
 	thread *Thread
 	method *classloader.Method
+	class *classloader.Class
 	instance *Object
 	stackedPc util.U4
 	errorCode util.U1
@@ -57,6 +58,7 @@ func NewStackFrameByMethod(thread *Thread,method *classloader.Method) *StackFram
 	frame := NewStackFrame(method.MaxLocals,method.MaxStack)
 	frame.method = method
 	frame.thread = thread
+	frame.class = method.GetClass()
 	return frame
 }
 

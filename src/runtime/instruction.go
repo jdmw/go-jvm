@@ -24,12 +24,11 @@ var (
 	dconst_0    = &DCONST_N{0}
 	dconst_1    = &DCONST_N{1}
 
-	//insts[0x10] = &BIPUSH{}
-	//insts[0x11] = &SIPUSH{}
-	//insts[0x12] = &LDC{}
-	//insts[0x13] = &LDC_W{}
-	//insts[0x14] = &LDC2_W{}
-
+	bipush = &BIPUSH{}
+	sipush = &SIPUSH{}
+	ldc = &LDC{} // load from constant pool
+	ldc_w = &LDC_W{}
+	ldc2_w = &LDC2_W{}
 
 	/* load var from local variable */
 	iload = &U4LOAD{}
@@ -112,78 +111,112 @@ var (
 	dup2_x2     = &DUP2_X2{}
 	swap        = &SWAP{}
 
+	/* MATH */
+	iadd        = &IADD{}
+	ladd        = &LADD{}
+	fadd        = &FADD{}
+	dadd        = &DADD{}
+	isub        = &ISUB{}
+	lsub        = &LSUB{}
+	fsub        = &FSUB{}
+	dsub        = &DSUB{}
+	imul        = &IMUL{}
+	lmul        = &LMUL{}
+	fmul        = &FMUL{}
+	dmul        = &DMUL{}
+	idiv        = &IDIV{}
+	ldiv        = &LDIV{}
+	fdiv        = &FDIV{}
+	ddiv        = &DDIV{}
+	irem        = &IREM{}
+	lrem        = &LREM{}
+	frem        = &FREM{}
+	drem        = &DREM{}
+	ineg        = &INEG{}
+	lneg        = &LNEG{}
+	fneg        = &FNEG{}
+	dneg        = &DNEG{}
+	ishl        = &ISHL{}
+	lshl        = &LSHL{}
+	ishr        = &ISHR{}
+	lshr        = &LSHR{}
+	iushr       = &IUSHR{}
+	lushr       = &LUSHR{}
+	iand        = &IAND{}
+	land        = &LAND{}
+	ior         = &IOR{}
+	lor         = &LOR{}
+	ixor        = &IXOR{}
+	lxor        = &LXOR{}
+	iinc 		= &IINC{}
 
-	//iadd        = &IADD{}
-	//ladd        = &LADD{}
-	//fadd        = &FADD{}
-	//dadd        = &DADD{}
-	//isub        = &ISUB{}
-	//lsub        = &LSUB{}
-	//fsub        = &FSUB{}
-	//dsub        = &DSUB{}
-	//imul        = &IMUL{}
-	//lmul        = &LMUL{}
-	//fmul        = &FMUL{}
-	//dmul        = &DMUL{}
-	//idiv        = &IDIV{}
-	//ldiv        = &LDIV{}
-	//fdiv        = &FDIV{}
-	//ddiv        = &DDIV{}
-	//irem        = &IREM{}
-	//lrem        = &LREM{}
-	//frem        = &FREM{}
-	//drem        = &DREM{}
-	//ineg        = &INEG{}
-	//lneg        = &LNEG{}
-	//fneg        = &FNEG{}
-	//dneg        = &DNEG{}
-	//ishl        = &ISHL{}
-	//lshl        = &LSHL{}
-	//ishr        = &ISHR{}
-	//lshr        = &LSHR{}
-	//iushr       = &IUSHR{}
-	//lushr       = &LUSHR{}
-	//iand        = &IAND{}
-	//land        = &LAND{}
-	//ior         = &IOR{}
-	//lor         = &LOR{}
-	//ixor        = &IXOR{}
-	//lxor        = &LXOR{}
-	//i2l         = &I2L{}
-	//i2f         = &I2F{}
-	//i2d         = &I2D{}
-	//l2i         = &L2I{}
-	//l2f         = &L2F{}
-	//l2d         = &L2D{}
-	//f2i         = &F2I{}
-	//f2l         = &F2L{}
-	//f2d         = &F2D{}
-	//d2i         = &D2I{}
-	//d2l         = &D2L{}
-	//d2f         = &D2F{}
-	//i2b         = &I2B{}
-	//i2c         = &I2C{}
-	//i2s         = &I2S{}
-	//lcmp        = &LCMP{}
-	//fcmpl       = &FCMPL{}
-	//fcmpg       = &FCMPG{}
-	//dcmpl       = &DCMPL{}
-	//dcmpg       = &DCMPG{}
-	//ireturn     = &IRETURN{}
-	//lreturn     = &LRETURN{}
-	//freturn     = &FRETURN{}
-	//dreturn     = &DRETURN{}
-	//areturn     = &ARETURN{}
-	//_return     = &RETURN{}
+	/* Type Conversion Instructions */
+	i2l         = &I2L{}
+	i2f         = &I2F{}
+	i2d         = &I2D{}
+	l2i         = &L2I{}
+	l2f         = &L2F{}
+	l2d         = &L2D{}
+	f2i         = &F2I{}
+	f2l         = &F2L{}
+	f2d         = &F2D{}
+	d2i         = &D2I{}
+	d2l         = &D2L{}
+	d2f         = &D2F{}
+	i2b         = &I2B{}
+	i2c         = &I2C{}
+	i2s         = &I2S{}
+
+  /* Comparisons */
+	lcmp        = &LCMP{}
+	fcmpl       = &FCMP_OP{-1}
+	fcmpg       = &FCMP_OP{1}
+	dcmpl       = &DCMP_OP{-1}
+	dcmpg       = &DCMP_OP{1}
+	ifeq		= &IF_COND{&eq{}}
+	ifne		= &IF_COND{&ne{}}
+	iflt		= &IF_COND{&lt{}}
+	ifle		= &IF_COND{&le{}}
+	ifgt		= &IF_COND{&gt{}}
+	ifge		= &IF_COND{&ge{}}
+	if_icmpeq		= &IF_ICMP_COMD{&eq{}}
+	if_icmpne		= &IF_ICMP_COMD{&ne{}}
+	if_icmplt		= &IF_ICMP_COMD{&lt{}}
+	if_icmple		= &IF_ICMP_COMD{&le{}}
+	if_icmpgt		= &IF_ICMP_COMD{&gt{}}
+	if_icmpge		= &IF_ICMP_COMD{&ge{}}
+	if_acmpeq		= &IF_ACMP_COMD{true}
+	if_acmpne		= &IF_ACMP_COMD{false}
+	// extend instructions
+	ifnull 			= &IFNULL{true} // 198 (0xc6)
+	ifnonnull 		= &IFNULL{false} // 199 (0xc7)
+
+  /* References Control */
+  _goto        = &GOTO{}
+  jsr         = &JSR{}
+  // extend 
+  goto_w        = &GOTO_W{}
+  jsr_w         = &JSR_W{}
+  ret         = &RET{}
+  tableswitch = &TABLE_SWITCH{}
+  lookupswitch= &LOOKUP_SWITCH{}
+  ireturn     = &IRETURN{}
+  lreturn     = &LRETURN{}
+  freturn     = &FRETURN{}
+  dreturn     = &DRETURN{}
+  areturn     = &ARETURN{}
+  _return      = &RETURN{}
+
 	//arraylength = &ARRAY_LENGTH{}
 	//// athrow        = &ATHROW{}
 	//// monitorenter  = &MONITOR_ENTER{}
 	//// monitorexit   = &MONITOR_EXIT{}
 	//invoke_native = &INVOKE_NATIVE{}
+	INSTR_CDOE_WIDE = util.U1(0xc4)
 )
 
 type Instruction interface {
-	execute(reader *util.BigEndianReader,frame *StackFrame)
+	execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)
 }
 func NewInstructionEngine(opcode byte) InstructionEngine {
 	insts := make([]Instruction,256)
@@ -206,11 +239,11 @@ func NewInstructionEngine(opcode byte) InstructionEngine {
 	insts[0x0d] = fconst_2
 	insts[0x0e] = dconst_0
 	insts[0x0f] = dconst_1
-	//insts[0x10] = &BIPUSH{}
-	//insts[0x11] = &SIPUSH{}
-	//insts[0x12] = &LDC{}
-	//insts[0x13] = &LDC_W{}
-	//insts[0x14] = &LDC2_W{}
+	insts[0x10] = bipush
+	insts[0x11] = sipush
+	insts[0x12] = ldc
+	insts[0x13] = ldc_w
+	insts[0x14] = ldc2_w
 
 	/* Loads */
 	insts[0x15] = iload
@@ -293,91 +326,96 @@ func NewInstructionEngine(opcode byte) InstructionEngine {
 	insts[0x5e] = dup2_x2
 	insts[0x5f] = swap
 
+	/* Math */
+	insts[0x60] = iadd
+	insts[0x61] = ladd
+	insts[0x62] = fadd
+	insts[0x63] = dadd
+	insts[0x64] = isub
+	insts[0x65] = lsub
+	insts[0x66] = fsub
+	insts[0x67] = dsub
+	insts[0x68] = imul
+	insts[0x69] = lmul
+	insts[0x6a] = fmul
+	insts[0x6b] = dmul
+	insts[0x6c] = idiv
+	insts[0x6d] = ldiv
+	insts[0x6e] = fdiv
+	insts[0x6f] = ddiv
+	insts[0x70] = irem
+	insts[0x71] = lrem
+	insts[0x72] = frem
+	insts[0x73] = drem
+	insts[0x74] = ineg
+	insts[0x75] = lneg
+	insts[0x76] = fneg
+	insts[0x77] = dneg
+	insts[0x78] = ishl
+	insts[0x79] = lshl
+	insts[0x7a] = ishr
+	insts[0x7b] = lshr
+	insts[0x7c] = iushr
+	insts[0x7d] = lushr
+	insts[0x7e] = iand
+	insts[0x7f] = land
+	insts[0x80] = ior
+	insts[0x81] = lor
+	insts[0x82] = ixor
+	insts[0x83] = lxor
+	insts[0x84] = iinc
 
-	//insts[0x60] = iadd
-	//insts[0x61] = ladd
-	//insts[0x62] = fadd
-	//insts[0x63] = dadd
-	//insts[0x64] = isub
-	//insts[0x65] = lsub
-	//insts[0x66] = fsub
-	//insts[0x67] = dsub
-	//insts[0x68] = imul
-	//insts[0x69] = lmul
-	//insts[0x6a] = fmul
-	//insts[0x6b] = dmul
-	//insts[0x6c] = idiv
-	//insts[0x6d] = ldiv
-	//insts[0x6e] = fdiv
-	//insts[0x6f] = ddiv
-	//insts[0x70] = irem
-	//insts[0x71] = lrem
-	//insts[0x72] = frem
-	//insts[0x73] = drem
-	//insts[0x74] = ineg
-	//insts[0x75] = lneg
-	//insts[0x76] = fneg
-	//insts[0x77] = dneg
-	//insts[0x78] = ishl
-	//insts[0x79] = lshl
-	//insts[0x7a] = ishr
-	//insts[0x7b] = lshr
-	//insts[0x7c] = iushr
-	//insts[0x7d] = lushr
-	//insts[0x7e] = iand
-	//insts[0x7f] = land
-	//insts[0x80] = ior
-	//insts[0x81] = lor
-	//insts[0x82] = ixor
-	//insts[0x83] = lxor
-	//insts[0x84] = &IINC{}
-	//insts[0x85] = i2l
-	//insts[0x86] = i2f
-	//insts[0x87] = i2d
-	//insts[0x88] = l2i
-	//insts[0x89] = l2f
-	//insts[0x8a] = l2d
-	//insts[0x8b] = f2i
-	//insts[0x8c] = f2l
-	//insts[0x8d] = f2d
-	//insts[0x8e] = d2i
-	//insts[0x8f] = d2l
-	//insts[0x90] = d2f
-	//insts[0x91] = i2b
-	//insts[0x92] = i2c
-	//insts[0x93] = i2s
-	//insts[0x94] = lcmp
-	//insts[0x95] = fcmpl
-	//insts[0x96] = fcmpg
-	//insts[0x97] = dcmpl
-	//insts[0x98] = dcmpg
-	//insts[0x99] = &IFEQ{}
-	//insts[0x9a] = &IFNE{}
-	//insts[0x9b] = &IFLT{}
-	//insts[0x9c] = &IFGE{}
-	//insts[0x9d] = &IFGT{}
-	//insts[0x9e] = &IFLE{}
-	//insts[0x9f] = &IF_ICMPEQ{}
-	//insts[0xa0] = &IF_ICMPNE{}
-	//insts[0xa1] = &IF_ICMPLT{}
-	//insts[0xa2] = &IF_ICMPGE{}
-	//insts[0xa3] = &IF_ICMPGT{}
-	//insts[0xa4] = &IF_ICMPLE{}
-	//insts[0xa5] = &IF_ACMPEQ{}
-	//insts[0xa6] = &IF_ACMPNE{}
-	//insts[0xa7] = &GOTO{}
-	//// insts[0xa8:
-	//// 	return &JSR{}
-	//// insts[0xa9:
-	//// 	return &RET{}
-	//insts[0xaa] = &TABLE_SWITCH{}
-	//insts[0xab] = &LOOKUP_SWITCH{}
-	//insts[0xac] = ireturn
-	//insts[0xad] = lreturn
-	//insts[0xae] = freturn
-	//insts[0xaf] = dreturn
-	//insts[0xb0] = areturn
-	//insts[0xb1] = _return
+	/* Type Conversion Instructions */
+	insts[0x85] = i2l
+	insts[0x86] = i2f
+	insts[0x87] = i2d
+	insts[0x88] = l2i
+	insts[0x89] = l2f
+	insts[0x8a] = l2d
+	insts[0x8b] = f2i
+	insts[0x8c] = f2l
+	insts[0x8d] = f2d
+	insts[0x8e] = d2i
+	insts[0x8f] = d2l
+	insts[0x90] = d2f
+	insts[0x91] = i2b
+	insts[0x92] = i2c
+	insts[0x93] = i2s
+
+  /* Comparisons */
+	insts[0x94] = lcmp
+	insts[0x95] = fcmpl
+	insts[0x96] = fcmpg
+	insts[0x97] = dcmpl
+	insts[0x98] = dcmpg
+	insts[0x99] = ifeq
+	insts[0x9a] = ifne
+	insts[0x9b] = iflt
+	insts[0x9c] = ifge
+	insts[0x9d] = ifgt
+	insts[0x9e] = ifle
+	insts[0x9f] = if_icmpeq
+	insts[0xa0] = if_icmpne
+	insts[0xa1] = if_icmplt
+	insts[0xa2] = if_icmpge
+	insts[0xa3] = if_icmpgt
+	insts[0xa4] = if_icmple
+	insts[0xa5] = if_acmpeq
+	insts[0xa6] = if_acmpne
+
+  /* References Control */
+	insts[0xa7] = _goto
+	insts[0xa8] = jsr 
+	insts[0xa9] = ret 
+	insts[0xaa] = tableswitch
+	insts[0xab] = lookupswitch
+	insts[0xac] = ireturn
+	insts[0xad] = lreturn
+	insts[0xae] = freturn
+	insts[0xaf] = dreturn
+	insts[0xb0] = areturn
+	insts[0xb1] = _return
+  
 	//insts[0xb2] = &GET_STATIC{}
 	//insts[0xb3] = &PUT_STATIC{}
 	//insts[0xb4] = &GET_FIELD{}
@@ -386,29 +424,26 @@ func NewInstructionEngine(opcode byte) InstructionEngine {
 	//insts[0xb7] = &INVOKE_SPECIAL{}
 	//insts[0xb8] = &INVOKE_STATIC{}
 	//insts[0xb9] = &INVOKE_INTERFACE{}
-	//// insts[0xba:
-	//// 	return &INVOKE_DYNAMIC{}
+	//// insts[0xba] = &INVOKE_DYNAMIC{}
 	//insts[0xbb] = &NEW{}
 	//insts[0xbc] = &NEW_ARRAY{}
 	//insts[0xbd] = &ANEW_ARRAY{}
 	//insts[0xbe] = arraylength
-	//// insts[0xbf:
-	//// 	return athrow
+	//// insts[0xbf] = athrow
 	//insts[0xc0] = &CHECK_CAST{}
 	//insts[0xc1] = &INSTANCE_OF{}
-	//// insts[0xc2:
-	//// 	return monitorenter
-	//// insts[0xc3:
-	//// 	return monitorexit
+	//// insts[0xc2]=  monitorenter
+	//// insts[0xc3] = return monitorexit
+
+	/* Extended */
 	//insts[0xc4] = &WIDE{}
 	//insts[0xc5] = &MULTI_ANEW_ARRAY{}
-	//insts[0xc6] = &IFNULL{}
-	//insts[0xc7] = &IFNONNULL{}
-	//insts[0xc8] = &GOTO_W{}
-	//// insts[0xc9:
-	//// 	return &JSR_W{}
-	//// insts[0xca: breakpoint
-	//insts[0xfe] = invoke_native
+	insts[0xc6] = ifnull
+	insts[0xc7] = ifnonnull
+	insts[0xc8] = goto_w
+	insts[0xc9] = jsr_w
+	// insts[0xca: breakpoint
+	// insts[0xfe] = invoke_native
 	return engine
 }
 
@@ -420,21 +455,42 @@ type InstructionEngine struct {
 type NOP struct {
 }
 
-func (self *NOP) execute(reader *util.BigEndianReader,frame *StackFrame)   {
+func (self *NOP) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)   {
 }
 
 func (self *InstructionEngine) execute(thread Thread){
 	frame := thread.stack.Top()
-	reader := util.NewBigEndianReader(frame.method.Code)
-	//codeLength := len(frame.method.Code)
-	for opcode := 0 ; reader.HasNext() ;  {
-		self.instructions[opcode].execute(reader,thread.stack.top)
-		if(thread.stack.top.errorCode > 0) {
-			// exit current method
-			break
+	if( len(frame.method.Code) > 0){
+		reader := util.NewBigEndianReader(frame.method.Code)
+		// Extend local variable index by additional bytes
+		// where <opcode> is one of iload, fload, aload, lload, dload, istore,
+		//   fstore, astore, lstore, dstore,  ret  or iinc
+		wideMode := false
+		opcode := reader.ReadU1()
+		for  ; reader.HasNext() ;   {
+			opcode = reader.ReadU1()
+			wideMode = INSTR_CDOE_WIDE == opcode
+			if( wideMode){
+				opcode = reader.ReadU1()
+			}
+			self.instructions[opcode].execute(reader,thread.stack.top,wideMode)
+			if(thread.stack.top.errorCode > 0) {
+				// exit current method
+				break
+			}
 		}
 	}
+
 	thread.stack.Pop()
+}
 
 
+func index(reader *util.BigEndianReader,wideMode bool ) util.U2{
+	var index util.U2
+	if wideMode {
+		index = reader.ReadU2()
+	}else {
+		index = util.U2(reader.ReadU1())
+	}
+	return index
 }

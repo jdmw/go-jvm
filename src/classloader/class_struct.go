@@ -15,7 +15,7 @@ type Class struct {
 	Classname string
 	ParentClass *Class
 	Interfaces []*Class
-	Constantpool ConstantPool
+	Constantpool *ConstantPool
 	Fields []Field
 	Methods []Method
 	Attributes classfile.Attributes
@@ -33,7 +33,7 @@ func (self ClassLoder) buildClass(cf *classfile.ClassFile ) *Class {
 	for i,name := range interfacenames {
 		class.Interfaces[i] = self.LoadClass(name)
 	}
-	class.Constantpool = ConstantPool{cpool,make([]*util.Slot,len(cpool))}
+	class.Constantpool = &ConstantPool{cpool,make([]*util.Slot,len(cpool))}
 	class.Fields = make([]Field,len(interfacenames))
 	for i,fieldinfo := range fields {
 		class.Fields[i] = Field{&class,fieldinfo.AccessFlag(),fieldinfo.Name(),
@@ -47,6 +47,7 @@ func (self ClassLoder) buildClass(cf *classfile.ClassFile ) *Class {
 	class.Attributes = attributes
 	return &class
 }
+
 
 func (self Class) LoadConstant (index util.U2,slotTable util.SlotTable) {
 	//entry := self.constantpool.slots[index]
@@ -73,8 +74,6 @@ func (self Class) LoadConstant (index util.U2,slotTable util.SlotTable) {
 			case *classfile.ConstDoubleInfo:
 				slotTable.SetDouble(index,raw.(*classfile.ConstDoubleInfo).Value())
 				break;
-
-
 			//case *ConstNameAndTypeInfo{};break;
 			//case *ConstUtf8Info{};break;
 			//case *ConstMethodHandleInfo{};break;
@@ -94,6 +93,21 @@ type ConstantPool struct {
 	cpool classfile.ConstantPool
 	slots []*util.Slot
 }
+
+func (self *ConstantPool) PushU4Num(index util.U2,stack *util.SlotStack)  {
+	stack.PushU4(self.slots[int(index)].Data)
+}
+
+func (self *ConstantPool) PushRef(index util.U2,stack *util.SlotStack)  {
+	stack.PushRef(self.slots[int(index)].Ref)
+}
+
+
+func (self *ConstantPool) PushU8Num(index util.U2,stack *util.SlotStack)  {
+	stack.PushU4_2(self.slots[int(index)].Data,self.slots[int(index+1)].Data)
+}
+
+
 
 /**
  * find method by name and parameter types

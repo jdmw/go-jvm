@@ -55,7 +55,7 @@ type U4STORE struct {
 	operand stack, and the value of the local variable at index is set
 	to value.
  */
-func (self *U4STORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *U4STORE) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	index := reader.ReadU1()
 	num := frame.OprandStack.PopU4()
 	frame.LocalVariables.SetU4(util.U2(index),num )
@@ -72,8 +72,8 @@ of the operand stack must be of type int. It is popped from the
 operand stack, and the value of the local variable at index is set
 to value.
 */
-func (self *U4STORE_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
-	index := self.index
+func (self *U4STORE_N) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
+	index := index(reader,wideMode)
 	num := frame.OprandStack.PopU4()
 	frame.LocalVariables.SetU4(util.U2(index),num )
 }
@@ -89,10 +89,10 @@ of the operand stack must be of type int. It is popped from the
 operand stack, and the value of the local variable at index is set
 to value.
 */
-func (self *U8STORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
-	index := reader.ReadU1()
+func (self *U8STORE) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
+	index := index(reader,wideMode)
 	num := frame.OprandStack.PopU8()
-	frame.LocalVariables.SetU8(util.U2(index),num )
+	frame.LocalVariables.SetU8(index,num )
 }
 
 type U8STORE_N struct {
@@ -106,7 +106,7 @@ of the operand stack must be of type int. It is popped from the
 operand stack, and the value of the local variable at index is set
 to value.
 */
-func (self *U8STORE_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *U8STORE_N) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	index := self.index
 	num := frame.OprandStack.PopU8()
 	frame.LocalVariables.SetU8(util.U2(index),num )
@@ -116,7 +116,7 @@ func (self *U8STORE_N) execute(reader *util.BigEndianReader,frame *StackFrame)  
 type IASTORE struct {
 }
 
-func (self *IASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *IASTORE) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	value := frame.OprandStack.PopInt()
 	index := frame.OprandStack.PopInt()
 	arrayRef := frame.OprandStack.PopRef()
@@ -134,7 +134,7 @@ func (self *IASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type LASTORE struct {
 }
 
-func (self *LASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *LASTORE) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	value := frame.OprandStack.PopLong()
 	index := frame.OprandStack.PopInt()
 	arrayRef := frame.OprandStack.PopRef()
@@ -152,7 +152,7 @@ func (self *LASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type FASTORE struct {
 }
 
-func (self *FASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *FASTORE) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	value := frame.OprandStack.PopFloat()
 	index := frame.OprandStack.PopInt()
 	arrayRef := frame.OprandStack.PopRef()
@@ -170,7 +170,7 @@ func (self *FASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type DASTORE struct {
 }
 
-func (self *DASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *DASTORE) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	value := frame.OprandStack.PopDouble()
 	index := frame.OprandStack.PopInt()
 	arrayRef := frame.OprandStack.PopRef()
@@ -188,7 +188,7 @@ func (self *DASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type AASTORE struct {
 }
 
-func (self *AASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *AASTORE) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	value := frame.OprandStack.PopRef()
 	index := frame.OprandStack.PopInt()
 	arrayRef := frame.OprandStack.PopRef()
@@ -206,7 +206,7 @@ func (self *AASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type BASTORE struct {
 }
 
-func (self *BASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *BASTORE) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	value := byte(frame.OprandStack.PopInt())
 	index := frame.OprandStack.PopInt()
 	arrayRef := frame.OprandStack.PopRef()
@@ -224,7 +224,7 @@ func (self *BASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type CASTORE struct {
 }
 
-func (self *CASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *CASTORE) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	value := util.Char(frame.OprandStack.PopU4())
 	index := frame.OprandStack.PopInt()
 	arrayRef := frame.OprandStack.PopRef()
@@ -242,7 +242,7 @@ func (self *CASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type SASTORE struct {
 }
 
-func (self *SASTORE) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *SASTORE) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	value := util.Short(frame.OprandStack.PopInt())
 	index := frame.OprandStack.PopInt()
 	arrayRef := frame.OprandStack.PopRef()

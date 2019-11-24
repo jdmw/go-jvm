@@ -51,17 +51,18 @@ Loads
 type U4LOAD struct {
 }
 
-func (self *U4LOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
-	index := reader.ReadU1()
+func (self *U4LOAD) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
+	index := index(reader,wideMode)
 	num := frame.LocalVariables.GetU4(util.U2(index))
 	frame.OprandStack.PushU4(num )
 }
+
 
 type U4LOAD_N struct {
 	num util.U2
 }
 
-func (self *U4LOAD_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *U4LOAD_N) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	num := frame.LocalVariables.GetU4(self.num)
 	frame.OprandStack.PushU4(num )
 }
@@ -70,8 +71,8 @@ func (self *U4LOAD_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type U8LOAD struct {
 }
 
-func (self *U8LOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
-	index := reader.ReadU1()
+func (self *U8LOAD) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
+	index := index(reader,wideMode)
 	num := frame.LocalVariables.GetU8(util.U2(index))
 	frame.OprandStack.PushU8(num )
 }
@@ -80,7 +81,7 @@ type U8LOAD_N struct {
 	num util.U2
 }
 
-func (self *U8LOAD_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *U8LOAD_N) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	num := frame.LocalVariables.GetU8(self.num)
 	frame.OprandStack.PushU8(num )
 }
@@ -88,7 +89,7 @@ func (self *U8LOAD_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type ALOAD struct {
 }
 
-func (self *ALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *ALOAD) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	index := reader.ReadU1()
 	ref := frame.LocalVariables.GetRef(util.U2(index))
 	frame.OprandStack.PushRef(ref )
@@ -98,7 +99,7 @@ type ALOAD_N struct {
 	num util.U2
 }
 
-func (self *ALOAD_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *ALOAD_N) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	num := frame.LocalVariables.GetRef(self.num)
 	frame.OprandStack.PushRef(num )
 }
@@ -107,7 +108,7 @@ type IALOAD struct {
 }
 
 
-func (self *IALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *IALOAD) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	index := frame.OprandStack.PopInt()
 	ref :=  frame.OprandStack.PopRef()
 	if(!checkNullPointer(frame,ref)) {
@@ -124,7 +125,7 @@ type LALOAD struct {
 }
 
 
-func (self *LALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *LALOAD) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	index := frame.OprandStack.PopInt()
 	ref :=  frame.OprandStack.PopRef()
 	if(!checkNullPointer(frame,ref)) {
@@ -141,7 +142,7 @@ type FALOAD struct {
 }
 
 
-func (self *FALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *FALOAD) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	index := frame.OprandStack.PopInt()
 	ref :=  frame.OprandStack.PopRef()
 	if(!checkNullPointer(frame,ref)) {
@@ -158,7 +159,7 @@ type DALOAD struct {
 }
 
 
-func (self *DALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *DALOAD) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	index := frame.OprandStack.PopInt()
 	ref :=  frame.OprandStack.PopRef()
 	if(!checkNullPointer(frame,ref)) {
@@ -174,7 +175,7 @@ func (self *DALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type AALOAD struct {
 }
 
-func (self *AALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *AALOAD) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	index := frame.OprandStack.PopInt()
 	ref :=  frame.OprandStack.PopRef()
 	if(!checkNullPointer(frame,ref)) {
@@ -190,7 +191,7 @@ func (self *AALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type BALOAD struct {
 }
 
-func (self *BALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *BALOAD) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	index := frame.OprandStack.PopInt()
 	ref :=  frame.OprandStack.PopRef()
 	if(!checkNullPointer(frame,ref)) {
@@ -208,7 +209,7 @@ func (self *BALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
 type CALOAD struct {
 }
 
-func (self *CALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *CALOAD) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	index := frame.OprandStack.PopInt()
 	ref :=  frame.OprandStack.PopRef()
 	if(!checkNullPointer(frame,ref)) {
@@ -225,7 +226,7 @@ type SALOAD struct {
 }
 
 
-func (self *SALOAD) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *SALOAD) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	index := frame.OprandStack.PopInt()
 	ref :=  frame.OprandStack.PopRef()
 	if(!checkNullPointer(frame,ref)) {

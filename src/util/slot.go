@@ -2,13 +2,12 @@ package util
 
 import (
 	"math"
-	"unsafe"
 )
 
 
 type Slot struct {
 	Data U4
-	Ref unsafe.Pointer
+	Ref Reference
 }
 type SlotTable []Slot
 type SlotStack struct {
@@ -26,7 +25,7 @@ func (self *SlotTable ) SetInt(index U2,num int32){
 }
 func (self *SlotTable ) GetInt(index U2) int32{
 	num := (*self)[index].Data
-	ui := *(*int32)(unsafe.Pointer(&num))
+	ui := *(*int32)(Reference(&num))
 	return ui
 }
 
@@ -46,11 +45,11 @@ func (self *SlotTable ) GetFloat(index U2) float32{
 	return math.Float32frombits(uint32((*self)[index].Data))
 }
 
-func (self *SlotTable) SetRef(index U2,ref unsafe.Pointer) {
+func (self *SlotTable) SetRef(index U2,ref Reference) {
 	(*self)[index].Ref = ref
 }
 
-func (self *SlotTable) GetRef(index U2) unsafe.Pointer {
+func (self *SlotTable) GetRef(index U2) Reference {
 	return (*self)[index].Ref
 }
 
@@ -72,7 +71,7 @@ func (self *SlotTable ) GetLong(index U2) int64{
 	high := U8((*self)[index+1].Data)
 	low := U8((*self)[index].Data)
 	u8 := high << 32 +  low
-	return *(*int64)(unsafe.Pointer(&u8))
+	return *(*int64)(Reference(&u8))
 }
 
 func (self *SlotTable ) SetDouble(index U2,num float64){
@@ -113,6 +112,16 @@ func (self *SlotStack) PushU8(num U8) {
 	self.table.SetU8(self.position,num )
 	self.position = self.position+2
 }
+func (self *SlotStack) PushU4_2(high U4,low U4) {
+	if(int(self.position) + 1 >= len(self.table)){
+		panic("the stack don't have enough space")
+	}
+	self.table.SetU4(self.position,high )
+	self.table.SetU4(self.position+1,low )
+	self.position = self.position+2
+}
+
+
 func (self *SlotStack) PushLong(num int64) {
 	if(int(self.position) + 1 >= len(self.table)){
 		panic("the stack don't have enough space")
@@ -121,7 +130,7 @@ func (self *SlotStack) PushLong(num int64) {
 	self.position = self.position+2
 }
 
-func (self *SlotStack) PushRef(ref unsafe.Pointer) {
+func (self *SlotStack) PushRef(ref Reference) {
 	if(int(self.position) >= len(self.table)){
 		panic("the stack is already full")
 	}
@@ -153,7 +162,7 @@ func (self *SlotStack) PopInt() int32 {
 	result := self.table.GetInt(self.position)
 	return result
 }
-func (self *SlotStack) PopRef() unsafe.Pointer {
+func (self *SlotStack) PopRef() Reference {
 	if( self.position == 0){
 		panic("stack is empty ")
 	}
@@ -225,7 +234,7 @@ int -> uint32 -> int
 ```go
     i := int(-1) // type : int
 	iu := uint32(i) // type : uint32
-	ui := *(*int)(unsafe.Pointer(&i)) // type : int
+	ui := *(*int)(Reference(&i)) // type : int
 	fmt.Println(ui == i) // true
 ```
 
@@ -235,9 +244,9 @@ int -> pointer -> int
 ```go
     i = int(1)
 	obj := &i
-	ptr := uintptr(unsafe.Pointer(obj))
+	ptr := uintptr(Reference(obj))
 	ref := int(ptr) // pointer address
-	ptr2 := unsafe.Pointer(uintptr(ref))
+	ptr2 := Reference(uintptr(ref))
 	intp := (*int)(ptr2)
 	fmt.Println(*intp) // print 1
 ```

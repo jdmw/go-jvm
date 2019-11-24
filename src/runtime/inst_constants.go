@@ -34,7 +34,7 @@ import "../util"
 type ACONST_NULL struct {
 }
 
-func (self *ACONST_NULL) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *ACONST_NULL) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	frame.OprandStack.PushRef(nil )
 }
 
@@ -42,7 +42,7 @@ type ICONST_N struct {
 	num int32
 }
 
-func (self *ICONST_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *ICONST_N) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	frame.OprandStack.PushInt(self.num )
 }
 
@@ -50,7 +50,7 @@ type FCONST_N struct {
 	num float32
 }
 
-func (self *FCONST_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *FCONST_N) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	frame.OprandStack.PushFloat(self.num )
 }
 
@@ -58,7 +58,7 @@ type DCONST_N struct {
 	num float64
 }
 
-func (self *DCONST_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *DCONST_N) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	frame.OprandStack.PushDouble(self.num )
 }
 
@@ -66,16 +66,63 @@ type LCONST_N struct {
 	num util.U8
 }
 
-func (self *LCONST_N) execute(reader *util.BigEndianReader,frame *StackFrame)  {
+func (self *LCONST_N) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
 	frame.OprandStack.PushU8(self.num )
 }
 
 
-
+/**
+ * Push byte
+ */
 type BIPUSH struct {
 }
 
-func (self *BIPUSH) execute(reader *util.BigEndianReader,frame *StackFrame)  {
-	smallInt := reader.ReadU1()
-	frame.OprandStack.PushInt(smallInt)
+func (self *BIPUSH) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
+	smallInt := int8(reader.ReadU1()) // sign-extended to int byte
+	frame.OprandStack.PushInt(int32(smallInt))
 }
+
+/**
+ * Push signed-short
+ */
+type SIPUSH struct {
+}
+
+func (self *SIPUSH) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
+	num :=  int16 (reader.ReadU2()) // sign-extended to int byte
+	frame.OprandStack.PushU4(util.U4(num))
+}
+
+
+
+type LDC struct {
+}
+
+func (self *LDC) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
+	index := reader.ReadU1() // sign-extended to int byte
+	frame.class.Constantpool.PushU4Num(util.U2(index),frame.OprandStack)
+}
+
+type LDC_W struct {
+}
+
+func (self *LDC_W) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
+	index := reader.ReadU2() // sign-extended to int byte
+	frame.class.Constantpool.PushU4Num(index,frame.OprandStack)
+}
+
+
+type LDC2_W struct {
+}
+
+func (self *LDC2_W) execute(reader *util.BigEndianReader,frame *StackFrame,wideMode bool)  {
+	index := reader.ReadU2() // sign-extended to int byte
+	frame.class.Constantpool.PushU8Num(index,frame.OprandStack)
+}
+
+
+
+
+
+
+
