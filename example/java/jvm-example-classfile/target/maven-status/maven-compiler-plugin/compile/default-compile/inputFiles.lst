@@ -1,6 +1,9 @@
-D:\work\go\jvm\example\java\jvm-example-classfile\src\main\java\jd\jvmexample\classfile\start\StartFromEmptyClass.java
-D:\work\go\jvm\example\java\jvm-example-classfile\src\main\java\jd\jvmexample\classfile\annotation\DemoRepeatableAnnotation.java
-D:\work\go\jvm\example\java\jvm-example-classfile\src\main\java\jd\jvmexample\classfile\annotation\AnnotationExample.java
-D:\work\go\jvm\example\java\jvm-example-classfile\src\main\java\jd\jvmexample\classfile\annotation\RuntimeAnnotation.java
-D:\work\go\jvm\example\java\jvm-example-classfile\src\main\java\jd\jvmexample\classfile\annotation\DemoAnotationType.java
-D:\work\go\jvm\example\java\jvm-example-classfile\src\main\java\jd\jvmexample\classfile\start\InnerClass.java
+/work/demo/go-jvm/example/java/jvm-example-classfile/src/main/java/jd/jvmexample/classfile/instrution/loadstore/DemoLoadStoreInstructions.java
+/work/demo/go-jvm/example/java/jvm-example-classfile/src/main/java/jd/jvmexample/classfile/attribute/annotation/RuntimeAnnotation.java
+/work/demo/go-jvm/example/java/jvm-example-classfile/src/main/java/jd/jvmexample/classfile/start/InnerClass.java
+/work/demo/go-jvm/example/java/jvm-example-classfile/src/main/java/jd/jvmexample/classfile/attribute/annotation/DemoAnotationType.java
+/work/demo/go-jvm/example/java/jvm-example-classfile/src/main/java/jd/jvmexample/classfile/attribute/annotation/DemoRepeatableAnnotation.java
+/work/demo/go-jvm/example/java/jvm-example-classfile/src/main/java/jd/jvmexample/classfile/instrution/DemoPojo.java
+/work/demo/go-jvm/example/java/jvm-example-classfile/src/main/java/jd/jvmexample/classfile/attribute/annotation/AnnotationExample.java
+/work/demo/go-jvm/example/java/jvm-example-classfile/src/main/java/jd/jvmexample/classfile/start/StartFromEmptyClass.java
+/work/demo/go-jvm/example/java/jvm-example-classfile/src/main/java/jd/jvmexample/classfile/attribute/ExampleStackMapTableAttr.java

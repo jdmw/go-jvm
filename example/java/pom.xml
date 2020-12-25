@@ -14,9 +14,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <modules>
-        <module>jvm-example-main</module>
-        <module>jvm-example-common</module>
-        <module>jvm-example-util</module>
         <module>jvm-example-helper</module>
         <module>jvm-example-classfile</module>
     </modules>

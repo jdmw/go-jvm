@@ -1,3 +1,8 @@
-jd\jvmexample\helper\codegen\classfile\attr\AttrStructFile.class
-jd\jvmexample\helper\codegen\classfile\attr\AttrStructureCodeGen.class
-jd\jvmexample\helper\codegen\URLS.class
+jd/jvmexample/helper/codegen/URLS.class
+jd/jvmexample/helper/codegen/classfile/attr/AttrStructureCodeGen.class
+jd/jvmexample/helper/codegen/classfile/attr/AttrStructureCodeGen$ElementInfo.class
+jd/jvmexample/helper/codegen/classfile/attr/AttrType.class
+jd/jvmexample/helper/codegen/classfile/attr/AttrStructure.class
+jd/jvmexample/util/JvmExampleUtil.class
+jd/jvmexample/common/JvmExampleCommon.class
+jd/jvmexample/helper/codegen/classfile/attr/AttrType$DataType.class

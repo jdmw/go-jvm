@@ -6,17 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="jvm-example-common" />
+        <module name="jvm-example-classfile" />
         <module name="jvm-example-helper" />
-        <module name="jvm-example-main" />
-        <module name="jvm-example-util" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
+      <module name="jvm-example-classfile" target="1.8" />
       <module name="jvm-example-common" target="1.8" />
       <module name="jvm-example-helper" target="1.8" />
+      <module name="jvm-example-inst" target="1.8" />
+      <module name="jvm-example-inst (1)" target="1.8" />
       <module name="jvm-example-main" target="1.8" />
-      <module name="jvm-example-parent" target="1.8" />
       <module name="jvm-example-util" target="1.8" />
     </bytecodeTargetLevel>
   </component>

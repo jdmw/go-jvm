@@ -1,14 +1,15 @@
 package jd.jvmexample.helper.codegen.classfile.attr;
 
-import com.sun.deploy.util.StringUtils;
 import jd.jvmexample.helper.codegen.URLS;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Scanner;
 
 
 public class AttrStructureCodeGen {
@@ -114,7 +115,7 @@ public class AttrStructureCodeGen {
     public static void main(String[] args) throws IOException {
 
         List<String> complete = new ArrayList<>();
-        list(true).forEach((name,e)->{
+        list(false).forEach((name,e)->{
             //AttrStructFile a = parseAttr(name,e);
             //complete.add(String.format("\t\t%scase \"%s\" : return &%s{}\n",a.finish?"":"\\\\  ",name,a.name));
             if("".contains(name)) {
