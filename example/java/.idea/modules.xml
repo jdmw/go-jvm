@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/jvm-example-classfile/jvm-example-classfile.iml" filepath="$PROJECT_DIR$/jvm-example-classfile/jvm-example-classfile.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jvm-example-helper/jvm-example-helper.iml" filepath="$PROJECT_DIR$/jvm-example-helper/jvm-example-helper.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jvm-example-inst/jvm-example-inst.iml" filepath="$PROJECT_DIR$/jvm-example-inst/jvm-example-inst.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/java.iml" filepath="$PROJECT_DIR$/.idea/java.iml" />
     </modules>
   </component>
 </project>

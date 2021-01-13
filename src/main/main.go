@@ -2,6 +2,7 @@ package main
 
 import (
 	"../classloader"
+	"../runtime"
 	"fmt"
 )
 
@@ -14,14 +15,24 @@ func startJvm(cmd *Cmd ){
 	fmt.Println(cmd.args)
 
 	loader := classloader.NewClassloader(cmd.Xjre,cmd.classpath)
-	classfile := loader.LoadClass(cmd.classname)
-	if classfile == nil {
+	mainClass := loader.LoadClass(cmd.classname)
+	if mainClass == nil {
 		panic("can not load main class " + cmd.classname)
 	}
+
+	mainMethod := mainClass.FindMethod("main","Ljava/lang/String;")
+	if mainMethod == nil {
+		panic("can't find main method in class " + cmd.classname)
+	}
+
+	mainThread := runtime.NewThread(STACK_DEPTH)
+	mainFrame := mainThread.LoadStaticMethod(mainMethod)
+
 }
 
 // run:  main -cp example\java\jvm-example-main\target\classes jd.jvmexample.main.Main
 func main(){
+	//runtime.SlotTest()
 	cmd := parseCmd()
 	if cmd.helpFlag {
 		printUsage()

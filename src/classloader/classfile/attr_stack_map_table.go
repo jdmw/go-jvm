@@ -1,14 +1,17 @@
 package classfile
 
+import "../../util"
+
+
 import "fmt"
 
 /*
    *ref:https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html
 
    StackMapTable_attribute {
-       u2              attribute_name_index;
-       u4              attribute_length;
-       u2              number_of_entries;
+       util.U2              attribute_name_index;
+       util.U4              attribute_length;
+       util.U2              number_of_entries;
        stack_map_frame entries[number_of_entries];
    }
 
@@ -25,41 +28,41 @@ import "fmt"
    }
 
 Top_variable_info {
-       u1 tag = ITEM_Top; /* 0
+       util.U1 tag = ITEM_Top; /* 0
 }
 
 Integer_variable_info {
-u1 tag = ITEM_Integer; /* 1
+util.U1 tag = ITEM_Integer; /* 1
 }
 
 Float_variable_info {
-u1 tag = ITEM_Float; /* 2
+util.U1 tag = ITEM_Float; /* 2
 }
 
 Null_variable_info {
-u1 tag = ITEM_Null; /* 5
+util.U1 tag = ITEM_Null; /* 5
 }
 
 UninitializedThis_variable_info {
-u1 tag = ITEM_UninitializedThis; /* 6
+util.U1 tag = ITEM_UninitializedThis; /* 6
 }
 
 Object_variable_info {
-u1 tag = ITEM_Object; /* 7
-u2 cpool_index;
+util.U1 tag = ITEM_Object; /* 7
+util.U2 cpool_index;
 }
 
 Uninitialized_variable_info {
-u1 tag = ITEM_Uninitialized; /* 8
-u2 offset;
+util.U1 tag = ITEM_Uninitialized; /* 8
+util.U2 offset;
 }
 
 Long_variable_info {
-u1 tag = ITEM_Long; /* 4
+util.U1 tag = ITEM_Long; /* 4
 }
 
 Double_variable_info {
-u1 tag = ITEM_Double; /* 3
+util.U1 tag = ITEM_Double; /* 3
 }
 
 union stack_map_frame {
@@ -73,42 +76,42 @@ full_frame;
 }
 
 same_frame {
-u1 frame_type = SAME; /* 0-63
+util.U1 frame_type = SAME; /* 0-63
 }
 
 same_locals_1_stack_item_frame {
-u1 frame_type = SAME_LOCALS_1_STACK_ITEM; /* 64-127
+util.U1 frame_type = SAME_LOCALS_1_STACK_ITEM; /* 64-127
 verification_type_info stack[1];
 }
 
 same_locals_1_stack_item_frame_extended {
-u1 frame_type = SAME_LOCALS_1_STACK_ITEM_EXTENDED; /* 247
-u2 offset_delta;
+util.U1 frame_type = SAME_LOCALS_1_STACK_ITEM_EXTENDED; /* 247
+util.U2 offset_delta;
 verification_type_info stack[1];
 }
 
 chop_frame {
-u1 frame_type = CHOP; /* 248-250
-u2 offset_delta;
+util.U1 frame_type = CHOP; /* 248-250
+util.U2 offset_delta;
 }
 
 same_frame_extended {
-u1 frame_type = SAME_FRAME_EXTENDED; /* 251
-u2 offset_delta;
+util.U1 frame_type = SAME_FRAME_EXTENDED; /* 251
+util.U2 offset_delta;
 }
 
 append_frame {
-u1 frame_type = APPEND; /* 252-254
-u2 offset_delta;
+util.U1 frame_type = APPEND; /* 252-254
+util.U2 offset_delta;
 verification_type_info locals[frame_type - 251];
 }
 
 full_frame {
-u1 frame_type = FULL_FRAME; /* 255
-u2 offset_delta;
-u2 number_of_locals;
+util.U1 frame_type = FULL_FRAME; /* 255
+util.U2 offset_delta;
+util.U2 number_of_locals;
 verification_type_info locals[number_of_locals];
-u2 number_of_stack_items;
+util.U2 number_of_stack_items;
 verification_type_info stack[number_of_stack_items];
 }
 */
@@ -127,13 +130,13 @@ const ITEM_Uninitialized =  8
 type StackMapTableAttr []StackMapFrame
 type StackMapFrame struct{
 	cp ConstantPool
-	frame_type	u1
-	offset_delta u2
+	frame_type	util.U1
+	offset_delta util.U2
 	locals	[]VerificationTypeInfo
 	stack []VerificationTypeInfo
 }
 
-func (self *StackMapTableAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+func (self *StackMapTableAttr) parse(cf ClassFile,length util.U4,r *util.BigEndianReader) {
 	number_of_entries := r.ReadU2()
 	entries := make([]StackMapFrame,number_of_entries)
 	for i := 0;i<int(number_of_entries);i++ {
@@ -148,15 +151,15 @@ func (self *StackMapTableAttr) parse(cf ClassFile,length u4,r *BigEndianReader) 
 }
 
 /**
-u1 frame_type = SAME; /* 0-63
-u1 frame_type = SAME_LOCALS_1_STACK_ITEM; /* 64-127
-u1 frame_type = SAME_LOCALS_1_STACK_ITEM_EXTENDED; /* 247
-u1 frame_type = CHOP; /* 248-250
-u1 frame_type = SAME_FRAME_EXTENDED; /* 251
-u1 frame_type = APPEND; /* 252-254
-u1 frame_type = FULL_FRAME; /* 255
+util.U1 frame_type = SAME; /* 0-63
+util.U1 frame_type = SAME_LOCALS_1_STACK_ITEM; /* 64-127
+util.U1 frame_type = SAME_LOCALS_1_STACK_ITEM_EXTENDED; /* 247
+util.U1 frame_type = CHOP; /* 248-250
+util.U1 frame_type = SAME_FRAME_EXTENDED; /* 251
+util.U1 frame_type = APPEND; /* 252-254
+util.U1 frame_type = FULL_FRAME; /* 255
  */
-func (self *StackMapFrame) parse(cf ClassFile,r *BigEndianReader){
+func (self *StackMapFrame) parse(cf ClassFile,r *util.BigEndianReader){
 	frame_type := self.frame_type
 	if  frame_type < 248 {
 		if frame_type < 64 { // frame_type = SAME; /* 0-63
@@ -181,11 +184,11 @@ func (self *StackMapFrame) parse(cf ClassFile,r *BigEndianReader){
 	}
 }
 
-func (self *StackMapFrame) FrameType() u1{
+func (self *StackMapFrame) FrameType() util.U1{
 	return self.frame_type
 }
 
-func (self *StackMapFrame) OffsetDelta() u1{
+func (self *StackMapFrame) OffsetDelta() util.U1{
 	return self.frame_type
 }
 
@@ -197,31 +200,31 @@ func (self *StackMapFrame) Stack() []VerificationTypeInfo{
 	return self.stack
 }
 
-func (self *StackMapFrame) parseSameFrame(cf ClassFile,r *BigEndianReader) {
-	self.offset_delta = u2(self.frame_type)
+func (self *StackMapFrame) parseSameFrame(cf ClassFile,r *util.BigEndianReader) {
+	self.offset_delta = util.U2(self.frame_type)
 }
 
-func (self *StackMapFrame) parseSameLocals1StackItemFrame(cf ClassFile,r *BigEndianReader) {
+func (self *StackMapFrame) parseSameLocals1StackItemFrame(cf ClassFile,r *util.BigEndianReader) {
 	//self.stack = make([]VerificationTypeInfo,1)
 	self.stack= []VerificationTypeInfo{ parseVerificationTypeInfo(cf,r)}
-	self.offset_delta = u2( 64 - self.frame_type)
+	self.offset_delta = util.U2( 64 - self.frame_type)
 }
 
-func (self *StackMapFrame) parseSameLocals1StackItemFrameExtended(cf ClassFile,r *BigEndianReader) {
+func (self *StackMapFrame) parseSameLocals1StackItemFrameExtended(cf ClassFile,r *util.BigEndianReader) {
 	self.offset_delta = r.ReadU2()
 	self.stack = []VerificationTypeInfo{parseVerificationTypeInfo(cf,r)}
 }
 
-func (self *StackMapFrame) parseChopFrame(cf ClassFile,r *BigEndianReader) {
+func (self *StackMapFrame) parseChopFrame(cf ClassFile,r *util.BigEndianReader) {
 	self.offset_delta = r.ReadU2()
 }
 
 
-func (self *StackMapFrame) parseSameFrameExtended(cf ClassFile,r *BigEndianReader) {
+func (self *StackMapFrame) parseSameFrameExtended(cf ClassFile,r *util.BigEndianReader) {
 	self.offset_delta = r.ReadU2()
 }
 
-func (self *StackMapFrame) parseAppendFrame(cf ClassFile,r *BigEndianReader) {
+func (self *StackMapFrame) parseAppendFrame(cf ClassFile,r *util.BigEndianReader) {
 	self.offset_delta = r.ReadU2()
 	self.locals = make([]VerificationTypeInfo,self.frame_type - 251)
 	for i := range self.locals {
@@ -231,7 +234,7 @@ func (self *StackMapFrame) parseAppendFrame(cf ClassFile,r *BigEndianReader) {
 }
 
 
-func (self *StackMapFrame) parseFullFrame(cf ClassFile,r *BigEndianReader) {
+func (self *StackMapFrame) parseFullFrame(cf ClassFile,r *util.BigEndianReader) {
 	self.offset_delta = r.ReadU2()
 	self.locals = make([]VerificationTypeInfo,self.frame_type - 251)
 	for i := range self.locals {
@@ -249,53 +252,53 @@ func (self *StackMapFrame) parseFullFrame(cf ClassFile,r *BigEndianReader) {
  **********************************************************/
 /**
 Top_variable_info {
-    u1 tag = ITEM_Top; /* 0
+    util.U1 tag = ITEM_Top; /* 0
 }
 
 Integer_variable_info {
-u1 tag = ITEM_Integer; /* 1
+util.U1 tag = ITEM_Integer; /* 1
 }
 
 Float_variable_info {
-u1 tag = ITEM_Float; /* 2
+util.U1 tag = ITEM_Float; /* 2
 }
 
 Null_variable_info {
-u1 tag = ITEM_Null; /* 5
+util.U1 tag = ITEM_Null; /* 5
 }
 
 UninitializedThis_variable_info {
-u1 tag = ITEM_UninitializedThis; /* 6
+util.U1 tag = ITEM_UninitializedThis; /* 6
 }
 
 Object_variable_info {
-u1 tag = ITEM_Object; /* 7
-u2 cpool_index;
+util.U1 tag = ITEM_Object; /* 7
+util.U2 cpool_index;
 }
 
 Uninitialized_variable_info {
-u1 tag = ITEM_Uninitialized; /* 8
-u2 offset;
+util.U1 tag = ITEM_Uninitialized; /* 8
+util.U2 offset;
 }
 
 Long_variable_info {
-u1 tag = ITEM_Long; /* 4
+util.U1 tag = ITEM_Long; /* 4
 }
 
 Double_variable_info {
-u1 tag = ITEM_Double; /* 3
+util.U1 tag = ITEM_Double; /* 3
 }
 
 */
 
 type VerificationTypeInfo struct {
 	//cp ConstantPool
-	tag u1
-	cpool_index_or_offset u2
-	//offset u2
+	tag util.U1
+	cpool_index_or_offset util.U2
+	//offset util.U2
 }
 
-func  parseVerificationTypeInfo(cf ClassFile,r *BigEndianReader) VerificationTypeInfo{
+func  parseVerificationTypeInfo(cf ClassFile,r *util.BigEndianReader) VerificationTypeInfo{
 	//self.cp = cf.constant_pool
 	info := VerificationTypeInfo{}
 	info.tag = r.ReadU1()
@@ -305,18 +308,18 @@ func  parseVerificationTypeInfo(cf ClassFile,r *BigEndianReader) VerificationTyp
 	return info
 }
 
-func (self VerificationTypeInfo) Tag() u1{
+func (self VerificationTypeInfo) Tag() util.U1{
 	return self.tag
 }
 
-func (self VerificationTypeInfo) getCPoolIndex() u2{
+func (self VerificationTypeInfo) getCPoolIndex() util.U2{
 	if (self.tag == ITEM_Object) {
 		return self.cpool_index_or_offset
 	}
 	return 0
 }
 
-func (self *VerificationTypeInfo) getOffset() u2{
+func (self *VerificationTypeInfo) getOffset() util.U2{
 	if (self.tag == ITEM_Uninitialized) {
 		return self.cpool_index_or_offset
 	}
@@ -324,7 +327,7 @@ func (self *VerificationTypeInfo) getOffset() u2{
 }
 
 /*type StackMapFrame interface{
-	parse(cf ClassFile,r *BigEndianReader)
-	FrameType() u1
-	OffsetDelta() u1
+	parse(cf ClassFile,r *util.BigEndianReader)
+	FrameType() util.U1
+	OffsetDelta() util.U1
 }*/

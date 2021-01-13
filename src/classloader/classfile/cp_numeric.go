@@ -1,5 +1,8 @@
 package classfile
 
+import "../../util"
+
+
 import "math"
 
 /**
@@ -11,32 +14,32 @@ CONSTANT_Double	6	45.3	1.0.2
 
 /**
 CONSTANT_Integer_info {
-    u1 tag;
-    u4 bytes;
+    util.U1 tag;
+    util.U4 bytes;
 }
 
 CONSTANT_Float_info {
-    u1 tag;
-    u4 bytes;
+    util.U1 tag;
+    util.U4 bytes;
 }
 */
 
 type ConstIntegerInfo struct {
-	value u4
+	value util.U4
 }
 type ConstFloatInfo struct {
 	value float32
 }
 
-func (self *ConstIntegerInfo) readInfo(r *BigEndianReader) {
+func (self *ConstIntegerInfo) readInfo(r *util.BigEndianReader) {
 	self.value = r.ReadU4()
 }
 
-func (self *ConstIntegerInfo) Value() u4 {
+func (self *ConstIntegerInfo) Value() util.U4 {
 	return self.value
 }
 
-func (self *ConstFloatInfo) readInfo(r *BigEndianReader) {
+func (self *ConstFloatInfo) readInfo(r *util.BigEndianReader) {
 	self.value = math.Float32frombits(uint32(r.ReadU4()))
 }
 
@@ -45,33 +48,33 @@ func (self *ConstFloatInfo) Value() float32 {
 }
 /*
 CONSTANT_Long_info {
-    u1 tag;
-    u4 high_bytes;
-    u4 low_bytes;
+    util.U1 tag;
+    util.U4 high_bytes;
+    util.U4 low_bytes;
 }
 
 CONSTANT_Double_info {
-    u1 tag;
-    u4 high_bytes;
-    u4 low_bytes;
+    util.U1 tag;
+    util.U4 high_bytes;
+    util.U4 low_bytes;
 }
 */
 type ConstLongInfo struct {
-	value u8
+	value util.U8
 }
 type ConstDoubleInfo struct {
 	value float64
 }
 
-func (self *ConstLongInfo) readInfo(r *BigEndianReader) {
+func (self *ConstLongInfo) readInfo(r *util.BigEndianReader) {
 	self.value = r.ReadU8()
 }
 
-func (self *ConstDoubleInfo) readInfo(r *BigEndianReader) {
+func (self *ConstDoubleInfo) readInfo(r *util.BigEndianReader) {
 	self.value = math.Float64frombits(uint64(r.ReadU8()))
 }
 
-func (self *ConstLongInfo) Value() u8 {
+func (self *ConstLongInfo) Value() util.U8 {
 	return self.value
 }
 

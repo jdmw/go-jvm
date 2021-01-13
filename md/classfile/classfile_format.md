@@ -13,26 +13,26 @@ https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.4
 
 ```
 ClassFile {
-    u4             magic; // 0xCAFEBABE
-    u2             minor_version; 
-    u2             major_version;
+    util.U4             magic; // 0xCAFEBABE
+    util.util.U2             minor_version; 
+    util.util.U2             major_version;
     
-    u2             constant_pool_count; // 常量池中常量个数，从1开始计
+    util.util.U2             constant_pool_count; // 常量池中常量个数，从1开始计
     cp_info        constant_pool[constant_pool_count-1]; // 常量池
     
-    u2             access_flags; 
-    u2             this_class; // 当前类名常量定义所在常量池位置，指向CONSTANT_Class_info结构
-    u2             super_class;// 父类名常量定义,也是常量池索引。为0表示父类为Object
-    u2             interfaces_count; // 
-    u2             interfaces[interfaces_count];
+    util.util.U2             access_flags; 
+    util.util.U2             this_class; // 当前类名常量定义所在常量池位置，指向CONSTANT_Class_info结构
+    util.util.U2             super_class;// 父类名常量定义,也是常量池索引。为0表示父类为Object
+    util.util.U2             interfaces_count; // 
+    util.util.U2             interfaces[interfaces_count];
     
-    u2             fields_count;
+    util.util.U2             fields_count;
     field_info     fields[fields_count];
     
-    u2             methods_count;
+    util.util.U2             methods_count;
     method_info    methods[methods_count];
     
-    u2             attributes_count;
+    util.util.U2             attributes_count;
     attribute_info attributes[attributes_count];
 }
 ```
@@ -57,8 +57,8 @@ ACC_MODULE			| 0x8000	| Is a module, not a class or interface.
 
 
     cp_info {
-        u1 tag;
-        u1 info[];
+        util.U1 tag;
+        util.U1 info[];
     }
 
 Table 4.4-A. Constant pool tags (by section)
@@ -88,8 +88,8 @@ CONSTANT_Package	     | 20
 表示类和接口，ClassFile结构的this_class、super_class、interface指向此接口。
 
        CONSTANT_Class_info {
-           u1 tag;
-           u2 name_index; // 指向CONSTANT_Utf8_info 常量
+           util.U1 tag;
+           util.util.U2 name_index; // 指向CONSTANT_Utf8_info 常量
        }
        
 
@@ -97,21 +97,21 @@ CONSTANT_Package	     | 20
 
 
     CONSTANT_Fieldref_info {
-        u1 tag;
-        u2 class_index;
-        u2 name_and_type_index;
+        util.U1 tag;
+        util.util.U2 class_index;
+        util.util.U2 name_and_type_index;
     }
     
     CONSTANT_Methodref_info {
-        u1 tag;
-        u2 class_index;
-        u2 name_and_type_index;
+        util.U1 tag;
+        util.util.U2 class_index;
+        util.util.U2 name_and_type_index;
     }
     
     CONSTANT_InterfaceMethodref_info {
-        u1 tag;
-        u2 class_index;
-        u2 name_and_type_index;
+        util.U1 tag;
+        util.util.U2 class_index;
+        util.util.U2 name_and_type_index;
     }
     
 ## The CONSTANT_String_info Structure
@@ -119,8 +119,8 @@ CONSTANT_Package	     | 20
 represent constant objects of the type String:
     
     CONSTANT_String_info {
-        u1 tag;
-        u2 string_index;
+        util.U1 tag;
+        util.util.U2 string_index;
     }
     
 ## CONSTANT_Integer_info and CONSTANT_Float_info Structures
@@ -129,13 +129,13 @@ represent 4-byte numeric (int and float) constants: (big-endian)
    
  
       CONSTANT_Integer_info {
-        u1 tag;
-        u4 bytes;
+        util.U1 tag;
+        util.U4 bytes;
       }
       
       CONSTANT_Float_info {
-        u1 tag;
-        u4 bytes;
+        util.U1 tag;
+        util.U4 bytes;
       }   
 
    
@@ -145,15 +145,15 @@ represent 8-byte numeric (long and double) constants:
 
 
     CONSTANT_Long_info {
-        u1 tag;
-        u4 high_bytes;
-        u4 low_bytes;
+        util.U1 tag;
+        util.U4 high_bytes;
+        util.U4 low_bytes;
     }
     
     CONSTANT_Double_info {
-        u1 tag;
-        u4 high_bytes;
-        u4 low_bytes;
+        util.U1 tag;
+        util.U4 high_bytes;
+        util.U4 low_bytes;
     }
     
 ## CONSTANT_NameAndType_info Structure
@@ -161,9 +161,9 @@ represent a field or method, without indicating which class or interface type it
    
        
        CONSTANT_NameAndType_info {
-           u1 tag;
-           u2 name_index; // --> CONSTANT_Utf8_info 
-           u2 descriptor_index; // --> CONSTANT_Utf8_info 
+           util.U1 tag;
+           util.util.U2 name_index; // --> CONSTANT_Utf8_info 
+           util.util.U2 descriptor_index; // --> CONSTANT_Utf8_info 
        }
        
 ## CONSTANT_MethodHandle_info 
@@ -173,9 +173,9 @@ represent a field or method, without indicating which class or interface type it
  
  
 CONSTANT_MethodHandle_info {
-    u1 tag;
-    u1 reference_kind; //  range 1 to 9
-    u2 reference_index;
+    util.U1 tag;
+    util.U1 reference_kind; //  range 1 to 9
+    util.util.U2 reference_index;
 }
 
 
@@ -184,23 +184,23 @@ CONSTANT_MethodHandle_info {
    The CONSTANT_MethodType_info structure is used to represent a method type:
    
        CONSTANT_MethodType_info {
-           u1 tag;
-           u2 descriptor_index;
+           util.U1 tag;
+           util.util.U2 descriptor_index;
        }
        
 ##  CONSTANT_Dynamic_info and CONSTANT_InvokeDynamic_info Structures
 
     
     CONSTANT_Dynamic_info {
-        u1 tag;
-        u2 bootstrap_method_attr_index; // index of the bootstrap_methods array of the bootstrap method table
-        u2 name_and_type_index; // --> CONSTANT_NameAndType_info 
+        util.U1 tag;
+        util.util.U2 bootstrap_method_attr_index; // index of the bootstrap_methods array of the bootstrap method table
+        util.util.U2 name_and_type_index; // --> CONSTANT_NameAndType_info 
     }
     
     CONSTANT_InvokeDynamic_info {
-        u1 tag;
-        u2 bootstrap_method_attr_index;
-        u2 name_and_type_index;
+        util.U1 tag;
+        util.U2 bootstrap_method_attr_index;
+        util.U2 name_and_type_index;
     }
     
 
@@ -209,26 +209,26 @@ CONSTANT_MethodHandle_info {
 represent a module:
 
     CONSTANT_Module_info {
-        u1 tag;
-        u2 name_index; // CONSTANT_Utf8_info 
+        util.U1 tag;
+        util.U2 name_index; // CONSTANT_Utf8_info 
     }
 
 ## CONSTANT_Package_info        
 
 
     CONSTANT_Package_info {
-        u1 tag;
-        u2 name_index; // -->CONSTANT_Utf8_info
+        util.U1 tag;
+        util.U2 name_index; // -->CONSTANT_Utf8_info
     }
     
 # Fields
    
    
        field_info {
-           u2             access_flags;
-           u2             name_index; // 字段名称--> CONSTANT_Utf8_info
-           u2             descriptor_index;// 数据类型 --> CONSTANT_Utf8_info
-           u2             attributes_count;
+           util.U2             access_flags;
+           util.U2             name_index; // 字段名称--> CONSTANT_Utf8_info
+           util.U2             descriptor_index;// 数据类型 --> CONSTANT_Utf8_info
+           util.U2             attributes_count;
            attribute_info attributes[attributes_count];
        }   
        
@@ -262,10 +262,10 @@ compile：
 # Methods
 
     method_info {
-        u2             access_flags;
-        u2             name_index; // 方法名称，指向CONSTANT_Utf8_info类型常量索引
-        u2             descriptor_index; //  -->CONSTANT_Utf8_info： (输入变量类型，“;”隔开)返回类型
-        u2             attributes_count; 
+        util.U2             access_flags;
+        util.U2             name_index; // 方法名称，指向CONSTANT_Utf8_info类型常量索引
+        util.U2             descriptor_index; //  -->CONSTANT_Utf8_info： (输入变量类型，“;”隔开)返回类型
+        util.U2             attributes_count; 
         attribute_info attributes[attributes_count];
     }
 
@@ -307,32 +307,32 @@ compile：
 Attributes are used in the ClassFile, field_info, method_info, and Code_attribute structures of the class file format (§4.1, §4.5, §4.6, §4.7.3).
   
       attribute_info {
-          u2 attribute_name_index;
-          u4 attribute_length;
-          u1 info[attribute_length];
+          util.U2 attribute_name_index;
+          util.U4 attribute_length;
+          util.U1 info[attribute_length];
       }
 
 ```
 
 LineNumberTable_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 line_number_table_length;
-    {   u2 start_pc;
-        u2 line_number;	
+    util.U2 attribute_name_index;
+    util.U4 attribute_length;
+    util.U2 line_number_table_length;
+    {   util.U2 start_pc;
+        util.U2 line_number;	
     } line_number_table[line_number_table_length];
 }
 
 
 LocalVariableTable_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 local_variable_table_length;
-    {   u2 start_pc;
-        u2 length;
-        u2 name_index;
-        u2 descriptor_index;
-        u2 index;
+    util.U2 attribute_name_index;
+    util.U4 attribute_length;
+    util.U2 local_variable_table_length;
+    {   util.U2 start_pc;
+        util.U2 length;
+        util.U2 name_index;
+        util.U2 descriptor_index;
+        util.U2 index;
     } local_variable_table[local_variable_table_length];
 }
 

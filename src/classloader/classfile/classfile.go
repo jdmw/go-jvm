@@ -1,24 +1,28 @@
 package classfile
 
+import "../../util"
+
+
+
 /**
 参考： https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1
 
 ClassFile {
-    u4             magic;
-    u2             minor_version;
-    u2             major_version;
-    u2             constant_pool_count;
+    util.U4             magic;
+    util.U2             minor_version;
+    util.U2             major_version;
+    util.U2             constant_pool_count;
     cp_info        constant_pool[constant_pool_count-1];
-    u2             access_flags;
-    u2             this_class;
-    u2             super_class;
-    u2             interfaces_count;
-    u2             interfaces[interfaces_count];
-    u2             fields_count;
+    util.U2             access_flags;
+    util.U2             this_class;
+    util.U2             super_class;
+    util.U2             interfaces_count;
+    util.U2             interfaces[interfaces_count];
+    util.U2             fields_count;
     field_info     fields[fields_count];
-    u2             methods_count;
+    util.U2             methods_count;
     method_info    methods[methods_count];
-    u2             attributes_count;
+    util.U2             attributes_count;
     attribute_info attributes[attributes_count];
 }
 */
@@ -26,14 +30,14 @@ ClassFile {
 const CLASSFILE_MAGICNUM = 0xCAFEBABE
 
 type ClassFile struct {
-	//u4            magic
-	minor_version   u2
-	major_version   u2
+	//util.U4            magic
+	minor_version   util.U2
+	major_version   util.U2
 	constant_pool 	ConstantPool
-	access_flags    u2
-	this_class      u2
-	super_class     u2
-	interfaces      []u2
+	access_flags    util.U2
+	this_class      util.U2
+	super_class     util.U2
+	interfaces      []util.U2
 	fields          []FieldInfo
 	methods         []MethodInfo
 	attributes      []AttributeInfo
@@ -41,7 +45,7 @@ type ClassFile struct {
 
 func ParseClassFile(data []byte) *ClassFile {
 	cf := ClassFile{}
-	r := &BigEndianReader{data}
+	r := util.NewBigEndianReader(data)
 	if( CLASSFILE_MAGICNUM != r.ReadU4()){
 		panic("java.lang.ClassFormatError: magic!")
 	}

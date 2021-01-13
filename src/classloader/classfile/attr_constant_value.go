@@ -1,19 +1,21 @@
 package classfile
 
+import "../../util"
+
 /*
 ConstantValue_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 constantvalue_index;
+util.U2 attribute_name_index;
+util.U4 attribute_length;
+util.U2 constantvalue_index;
 }
 
 */
 type ConstantValueAttr struct {
 	cp ConstantPool
-	constantvalue_index u2
+	constantvalue_index util.U2
 }
 
-func (self *ConstantValueAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+func (self *ConstantValueAttr) parse(cf ClassFile,length util.U4,r *util.BigEndianReader) {
 	self.cp = cf.constant_pool
 	self.constantvalue_index = r.ReadU2()
 }

@@ -1,88 +1,90 @@
 package classfile
 
+import "../../util"
+
 /*
 *ref:https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html
  * 
  * Module_attribute {
- *     u2 attribute_name_index;
- *     u4 attribute_length;
+ *     util.U2 attribute_name_index;
+ *     util.U4 attribute_length;
  * 
- *     u2 module_name_index;
- *     u2 module_flags;
- *     u2 module_version_index;
+ *     util.U2 module_name_index;
+ *     util.U2 module_flags;
+ *     util.U2 module_version_index;
  * 
- *     u2 requires_count;
- *     {   u2 requires_index;
- *         u2 requires_flags;
- *         u2 requires_version_index;
+ *     util.U2 requires_count;
+ *     {   util.U2 requires_index;
+ *         util.U2 requires_flags;
+ *         util.U2 requires_version_index;
  *     } requires[requires_count];
  * 
- *     u2 exports_count;
- *     {   u2 exports_index;
- *         u2 exports_flags;
- *         u2 exports_to_count;
- *         u2 exports_to_index[exports_to_count];
+ *     util.U2 exports_count;
+ *     {   util.U2 exports_index;
+ *         util.U2 exports_flags;
+ *         util.U2 exports_to_count;
+ *         util.U2 exports_to_index[exports_to_count];
  *     } exports[exports_count];
  * 
- *     u2 opens_count;
- *     {   u2 opens_index;
- *         u2 opens_flags;
- *         u2 opens_to_count;
- *         u2 opens_to_index[opens_to_count];
+ *     util.U2 opens_count;
+ *     {   util.U2 opens_index;
+ *         util.U2 opens_flags;
+ *         util.U2 opens_to_count;
+ *         util.U2 opens_to_index[opens_to_count];
  *     } opens[opens_count];
  * 
- *     u2 uses_count;
- *     u2 uses_index[uses_count];
+ *     util.U2 uses_count;
+ *     util.U2 uses_index[uses_count];
  * 
- *     u2 provides_count;
- *     {   u2 provides_index;
- *         u2 provides_with_count;
- *         u2 provides_with_index[provides_with_count];
+ *     util.U2 provides_count;
+ *     {   util.U2 provides_index;
+ *         util.U2 provides_with_count;
+ *         util.U2 provides_with_index[provides_with_count];
  *     } provides[provides_count];
  * }
  */
 
 type ModuleRequires struct{
-	requires_index           u2
-	requires_flags           u2
-	requires_version_index   u2
+	requires_index           util.U2
+	requires_flags           util.U2
+	requires_version_index   util.U2
 }
 
 type ModuleExports struct{
-	exports_index u2
-	exports_flags u2
-	exports_to_index []u2
+	exports_index util.U2
+	exports_flags util.U2
+	exports_to_index []util.U2
 }
 
 type ModuleOpens struct{
-	opens_index     u2
-	opens_flags     u2
-	opens_to_index  []u2
+	opens_index     util.U2
+	opens_flags     util.U2
+	opens_to_index  []util.U2
 }
 
 type ModuleProvides struct{
-	provides_index  u2
-	provides_with_index []u2
+	provides_index  util.U2
+	provides_with_index []util.U2
 }
 
 type ModuleAttr struct{
 	cp ConstantPool
-	attribute_name_index	u2
-	attribute_length	u4
-	module_name_index	u2
-	module_flags	u2
-	module_version_index	u2
+	attribute_name_index	util.U2
+	attribute_length	util.U4
+	module_name_index	util.U2
+	module_flags	util.U2
+	module_version_index	util.U2
 
 	requires []ModuleRequires
 	exports []ModuleExports
 	opens []ModuleOpens
 
-	uses_index []u2
+	uses_index []util.U2
 
 	provides []ModuleProvides
 }
 
-func (self *ModuleAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+func (self *ModuleAttr) parse(cf ClassFile,length util.U4,r *util.BigEndianReader) {
 	self.cp = cf.constant_pool
 	self.attribute_name_index = r.ReadU2()
 	self.attribute_length = r.ReadU4()
@@ -108,105 +110,105 @@ func (self *ModuleAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
 	}
 }
 
-func (self ModuleAttr) AttributeNameIndex() u2{
+func (self ModuleAttr) AttributeNameIndex() util.U2{
 	return self.attribute_name_index
 }
 
-func (self ModuleAttr) AttributeLength() u4{
+func (self ModuleAttr) AttributeLength() util.U4{
 	return self.attribute_length
 }
 
-func (self ModuleAttr) ModuleNameIndex() u2{
+func (self ModuleAttr) ModuleNameIndex() util.U2{
 	return self.module_name_index
 }
 
 
-func (self ModuleAttr) ModuleFlags() u2{
+func (self ModuleAttr) ModuleFlags() util.U2{
 	return self.module_flags
 }
 
 
-func (self ModuleAttr) ModuleVersionIndex() u2{
+func (self ModuleAttr) ModuleVersionIndex() util.U2{
 	return self.module_version_index
 }
 
 /*
-func (self ModuleAttribute) Requires() u2{
+func (self ModuleAttribute) Requires() util.U2{
 	return self.requires
 }
 
 
-func (self ModuleAttribute) RequiresFlags() u2{
+func (self ModuleAttribute) RequiresFlags() util.U2{
 	return self.requires_flags
 }
 
 
-func (self ModuleAttribute) RequiresVersionIndex() u2{
+func (self ModuleAttribute) RequiresVersionIndex() util.U2{
 	return self.requires_version_index
 }
 
 
-func (self ModuleAttribute) ExportsCount() u2{
+func (self ModuleAttribute) ExportsCount() util.U2{
 	return self.exports_count
 }
 
 
-func (self ModuleAttribute) ExportsFlags() u2{
+func (self ModuleAttribute) ExportsFlags() util.U2{
 	return self.exports_flags
 }
 
 
-func (self ModuleAttribute) ExportsToCount() u2{
+func (self ModuleAttribute) ExportsToCount() util.U2{
 	return self.exports_to_count
 }
 
 
-func (self ModuleAttribute) ExportsToIndex[exportsToCount]() u2{
+func (self ModuleAttribute) ExportsToIndex[exportsToCount]() util.U2{
 	return self.exports_to_index[exports_to_count]
 }
 
 
-func (self ModuleAttribute) OpensCount() u2{
+func (self ModuleAttribute) OpensCount() util.U2{
 	return self.opens_count
 }
 
 
-func (self ModuleAttribute) OpensFlags() u2{
+func (self ModuleAttribute) OpensFlags() util.U2{
 	return self.opens_flags
 }
 
 
-func (self ModuleAttribute) OpensToCount() u2{
+func (self ModuleAttribute) OpensToCount() util.U2{
 	return self.opens_to_count
 }
 
 
-func (self ModuleAttribute) OpensToIndex[opensToCount]() u2{
+func (self ModuleAttribute) OpensToIndex[opensToCount]() util.U2{
 	return self.opens_to_index[opens_to_count]
 }
 
 
-func (self ModuleAttribute) UsesCount() u2{
+func (self ModuleAttribute) UsesCount() util.U2{
 	return self.uses_count
 }
 
 
-func (self ModuleAttribute) UsesIndex[usesCount]() u2{
+func (self ModuleAttribute) UsesIndex[usesCount]() util.U2{
 	return self.uses_index[uses_count]
 }
 
 
-func (self ModuleAttribute) ProvidesCount() u2{
+func (self ModuleAttribute) ProvidesCount() util.U2{
 	return self.provides_count
 }
 
 
-func (self ModuleAttribute) ProvidesWithCount() u2{
+func (self ModuleAttribute) ProvidesWithCount() util.U2{
 	return self.provides_with_count
 }
 
 
-func (self ModuleAttribute) ProvidesWithIndex[providesWithCount]() u2{
+func (self ModuleAttribute) ProvidesWithIndex[providesWithCount]() util.U2{
 	return self.provides_with_index[provides_with_count]
 }
 */

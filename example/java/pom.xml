@@ -16,6 +16,7 @@
     <modules>
         <module>jvm-example-helper</module>
         <module>jvm-example-classfile</module>
+        <module>jvm-example-instruction</module>
     </modules>
 
 

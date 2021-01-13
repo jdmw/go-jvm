@@ -1,10 +1,13 @@
 package classfile
 
+import "../../util"
+
+
 /**
 SourceFile_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 sourcefile_index;
+    util.U2 attribute_name_index;
+    util.U4 attribute_length;
+    util.U2 sourcefile_index;
 }
  */
 
@@ -12,7 +15,7 @@ type SourceFileAttr struct {
 	sourcefile string
 }
 
-func (self *SourceFileAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+func (self *SourceFileAttr) parse(cf ClassFile,length util.U4,r *util.BigEndianReader) {
 	self.sourcefile = cf.constant_pool.getUtf8String(r.ReadU2())
 }
 

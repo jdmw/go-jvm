@@ -1,16 +1,19 @@
 package classfile
 
+import "../../util"
+
+
 /**
 attribute_info {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u1 info[attribute_length];
+    util.U2 attribute_name_index;
+    util.U4 attribute_length;
+    util.U1 info[attribute_length];
 }
  */
 
 type Attributes []AttributeInfo
 
-func parseAttributeInfo(cf ClassFile,r *BigEndianReader) AttributeInfo{
+func parseAttributeInfo(cf ClassFile,r *util.BigEndianReader) AttributeInfo{
 	attributeName := cf.constant_pool.getUtf8String(r.ReadU2())
 	length := r.ReadU4()
 	//bytes := r.ReadByteArray(length)
@@ -19,7 +22,7 @@ func parseAttributeInfo(cf ClassFile,r *BigEndianReader) AttributeInfo{
 	return info
 }
 
-func newAttributeInfo(attributeName string ,r *BigEndianReader) AttributeInfo{
+func newAttributeInfo(attributeName string ,r *util.BigEndianReader) AttributeInfo{
 	switch attributeName {
 		case "ConstantValue" : return &ConstantValueAttr{}
 		case "Code" : return &CodeAttr{}
@@ -54,7 +57,7 @@ func newAttributeInfo(attributeName string ,r *BigEndianReader) AttributeInfo{
 }
 
 
-func parseAttributes(cf ClassFile,length u2,r *BigEndianReader) Attributes{
+func parseAttributes(cf ClassFile,length util.U2,r *util.BigEndianReader) Attributes{
 	attrs := make([]AttributeInfo,length)
 	for i:=0;i < int(length);i++ {
 		attrs[i] = parseAttributeInfo(cf,r)
@@ -63,7 +66,7 @@ func parseAttributes(cf ClassFile,length u2,r *BigEndianReader) Attributes{
 }
 
 type AttributeInfo interface {
-	parse(cf ClassFile,length u4,r *BigEndianReader)
+	parse(cf ClassFile,length util.U4,r *util.BigEndianReader)
 }
 
 //var attrParser = map[string]AttributeInfoParser{}
@@ -106,13 +109,13 @@ NestMembers        §4.7.29	55.0	11
 *ref:https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html
  *
  * Synthetic_attribute {
- *     u2 attribute_name_index;
- *     u4 attribute_length; // must be 0
+ *     util.U2 attribute_name_index;
+ *     util.U4 attribute_length; // must be 0
  * }
 */
 type SyntheticAttr struct{
 }
-func (self SyntheticAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+func (self SyntheticAttr) parse(cf ClassFile,length util.U4,r *util.BigEndianReader) {
 }
 
 
@@ -120,19 +123,28 @@ func (self SyntheticAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
 *ref:https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html
  *
  * Deprecated_attribute {
- *     u2 attribute_name_index;
- *     u4 attribute_length;
+ *     util.U2 attribute_name_index;
+ *     util.U4 attribute_length;
  * }
 */
 type DeprecatedAttr struct{
 }
-func (self DeprecatedAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+func (self DeprecatedAttr) parse(cf ClassFile,length util.U4,r *util.BigEndianReader) {
 }
 
 type UnknownAttr struct {
 	data []byte
 }
 
-func (self *UnknownAttr) parse(cf ClassFile,length u4,r *BigEndianReader) {
+func (self *UnknownAttr) parse(cf ClassFile,length util.U4,r *util.BigEndianReader) {
 	self.data = r.ReadByteArray(length)
+}
+
+func (self Attributes) GetCodeAttr() *CodeAttr{
+	for _,e := range self {
+		switch e.(type) {
+			case *CodeAttr : return e.(*CodeAttr) ;
+		}
+	}
+	return nil
 }
